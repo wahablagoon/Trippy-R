@@ -1,4 +1,4 @@
-package bl.taxi.driver.models;
+package bl.taxi.rider.models;
 
 /*
  * Created by DELL on 09/07/2017.

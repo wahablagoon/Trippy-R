@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="bl.taxi.driver">
+    package="bl.taxi.rider">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".controller.MyApplication"
+        android:name="bl.taxi.rider.controller.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SampleActivity">
+        <activity android:name="bl.taxi.rider.SampleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +40,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name="bl.taxi.rider.MapsActivity"
             android:label="@string/title_activity_maps"/>
     </application>
 

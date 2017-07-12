@@ -1,7 +1,7 @@
-package bl.taxi.driver.interfaces;
+package bl.taxi.rider.interfaces;
 
 
-import bl.taxi.driver.models.Model;
+import bl.taxi.rider.models.Model;
 import retrofit2.Call;
 import retrofit2.http.GET;
 

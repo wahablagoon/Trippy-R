@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="bl.taxi.driver.SampleActivity">
+    tools:context="bl.taxi.rider.SampleActivity">
 
     <TextView
         android:layout_width="match_parent"

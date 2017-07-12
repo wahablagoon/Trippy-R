@@ -1,11 +1,11 @@
-package bl.taxi.driver.controller;
+package bl.taxi.rider.controller;
 
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import bl.taxi.driver.interfaces.RetrofitAPI;
-import bl.taxi.driver.utils.Constants;
+import bl.taxi.rider.interfaces.RetrofitAPI;
+import bl.taxi.rider.utils.Constants;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

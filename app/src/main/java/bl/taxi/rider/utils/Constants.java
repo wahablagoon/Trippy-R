@@ -1,4 +1,4 @@
-package bl.taxi.driver.utils;
+package bl.taxi.rider.utils;
 
 /**
  * Created by DELL on 09/07/2017.

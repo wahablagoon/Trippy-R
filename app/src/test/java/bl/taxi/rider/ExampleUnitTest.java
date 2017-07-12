@@ -1,4 +1,4 @@
-package bl.taxi.driver;
+package bl.taxi.rider;
 
 import org.junit.Test;
 

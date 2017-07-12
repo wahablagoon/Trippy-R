@@ -1,4 +1,4 @@
-package bl.taxi.driver;
+package bl.taxi.rider;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
-import bl.taxi.driver.controller.MyApplication;
-import bl.taxi.driver.interfaces.RetrofitAPI;
-import bl.taxi.driver.models.Model;
+import bl.taxi.rider.controller.MyApplication;
+import bl.taxi.rider.interfaces.RetrofitAPI;
+import bl.taxi.rider.models.Model;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
