@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import java.util.List;
+
 import bl.taxi.rider.controller.MyApplication;
 import bl.taxi.rider.interfaces.RetrofitAPI;
 import bl.taxi.rider.models.Model;
@@ -33,25 +35,29 @@ public class SampleActivity extends AppCompatActivity {
     private void retrofitCall () {
 
         RetrofitAPI service = MyApplication.getService();
-        Call<Model> query = service.getData();
-        query.enqueue(new Callback<Model>() {
+        Call<List<Model>> query = service.getData("msg2thirumalai@gmail.com","thirumalai");
+        query.enqueue(new Callback<List<Model>>() {
             @Override
-            public void onResponse(@NonNull Call<Model> call, @NonNull Response<Model> response) {
-                System.out.print("hai response" + response);
-                Model result = response.body();
-                if (result != null) {
-                    name.setText(result.getName());
-                    intId.setText(String.valueOf(result.getId()));
+            public void onResponse(Call<List<Model>> call, Response<List<Model>> response) {
+                System.out.print("response" + response);
+                List<Model> result = response.body();
+                if (result.size()!= 0) {
+                    for (int i = 0; i < result.size(); i++) {
+                        String responseStatus = result.get(i).getEmail();
+                        String firstName = result.get(i).getFirstName()+" "+result.get(i).getLastName();
+                        name.setText(responseStatus);
+                        intId.setText(firstName);
+                    }
+
                 } else
                     System.out.print("hai result null");
-
-                //
             }
-
             @Override
-            public void onFailure(@NonNull Call<Model> call, @NonNull Throwable t) {
+            public void onFailure(Call<List<Model>> call, Throwable t) {
+
                 Log.e("Sample", "retrofit", t);
             }
+
         });
     }
 }

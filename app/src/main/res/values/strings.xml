@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">rider</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_canteen_intro1" translatable="false">Menus right on your screen</string>
+    <string name="title_canteen_intro2" translatable="false">Cash on delivery</string>
+    <string name="title_canteen_intro3" translatable="false">Choose what you like</string>
+    <string name="description_canteen_intro1" translatable="false">Looking for something to eat? Just browse the feed wherever you are.</string>
+    <string name="description_canteen_intro2" translatable="false">Order and we\'ll deliver the menu right in front of your door.</string>
+    <string name="description_canteen_intro3" translatable="false">Bookmark a menu you wanted to save and keep track of its status whether it\'s available or not.</string>
+    <string name="label_button_cta_canteen_intro" translatable="false">BOOK RIDE</string>
 </resources>
