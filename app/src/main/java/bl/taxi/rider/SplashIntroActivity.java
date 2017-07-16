@@ -39,7 +39,7 @@ public class SplashIntroActivity extends IntroActivity {
         addSlide(new SimpleSlide.Builder()
                 .title(R.string.title_canteen_intro1)
                 .description(R.string.description_canteen_intro1)
-                .image(R.mipmap.intro1)
+                .image(R.mipmap.splash_booking)
                 .background(R.color.color_canteen)
                 .backgroundDark(R.color.color_dark_canteen)
                 .buttonCtaClickListener(new View.OnClickListener() {
@@ -55,7 +55,7 @@ public class SplashIntroActivity extends IntroActivity {
         addSlide(new SimpleSlide.Builder()
                 .title(R.string.title_canteen_intro2)
                 .description(R.string.description_canteen_intro2)
-                .image(R.mipmap.intro2)
+                .image(R.mipmap.splash_favourites)
                 .background(R.color.color_canteen)
                 .backgroundDark(R.color.color_dark_canteen)
                 .buttonCtaClickListener(new View.OnClickListener() {
@@ -71,7 +71,7 @@ public class SplashIntroActivity extends IntroActivity {
         addSlide(new SimpleSlide.Builder()
                 .title(R.string.title_canteen_intro3)
                 .description(R.string.description_canteen_intro3)
-                .image(R.mipmap.intro3)
+                .image(R.mipmap.splash_track_ride)
                 .background(R.color.color_canteen)
                 .backgroundDark(R.color.color_dark_canteen)
                 .buttonCtaClickListener(new View.OnClickListener() {
@@ -79,7 +79,7 @@ public class SplashIntroActivity extends IntroActivity {
                     public void onClick(View v) {
                         Toast.makeText(SplashIntroActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
 
-                        nextSlide();
+                    //    nextSlide();
                     }
                 })
                 .build());

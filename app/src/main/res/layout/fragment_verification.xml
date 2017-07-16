@@ -2,54 +2,150 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_verification"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="bl.taxi.rider.fragments.VerificationFragment">
 
+
     <RelativeLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/header_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/header_layout"
         android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:background="@android:color/white" />
 
         <ImageButton
+            android:id="@+id/button_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:src="@drawable/ic_arrow_back_black_24dp"
-            android:layout_alignTop="@+id/toolbar"
             android:layout_alignBottom="@+id/toolbar"
-            android:id="@+id/imageButton"
-             />
+            android:layout_alignTop="@+id/toolbar"
+            android:background="@null"
+            android:padding="10dp"
+            android:src="@drawable/ic_arrow_back_black_24dp" />
 
         <TextView
-            android:text="Enter mobile number"
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/fl_fragment_container"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/button_back"
+            android:layout_toRightOf="@+id/button_back"
             android:gravity="center"
+            android:text="@string/enter_mobile_number"
+            android:textColor="@android:color/black"
             android:textSize="18sp"
-            android:layout_toRightOf="@+id/imageButton"
-            android:layout_toEndOf="@+id/imageButton"
-            android:layout_alignTop="@+id/toolbar"
-            android:layout_alignBottom="@+id/toolbar"
-            android:id="@+id/textView"
-             />
+            android:textStyle="bold" />
+
         <FrameLayout
             android:id="@+id/fl_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"
-            android:foreground="@drawable/bottom_shadow"/>
+            android:foreground="@drawable/bottom_shadow">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="30dp"
+                    android:text="@string/we_need_your_mobile_number_to_book_you_a_ride"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/button_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:visibility="gone"
+                    android:onClick="onClick"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignRight="@+id/mobile_number"
+                    android:layout_alignTop="@+id/mobile_number"
+                    android:src="@drawable/ic_close_black_24dp" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/mobile_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginRight="30dp"
+                    android:hint="@string/_10_digit_mobile_number"
+                    android:inputType="number"
+                    android:paddingStart="50dp"
+                    android:paddingEnd="50dp"
+                    android:paddingLeft="50dp"
+                    android:maxLength="10"
+                    android:textSize="22sp"
+                    app:met_baseColor="@android:color/black"
+                    app:met_floatingLabel="none"
+                    app:met_primaryColor="#3F51B5"
+                    app:met_singleLineEllipsis="true"
+                    android:layout_below="@+id/textView2"
+                    android:layout_alignLeft="@+id/textView2"
+                    android:layout_alignStart="@+id/textView2" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/country_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:enabled="false"
+                    android:textSize="22sp"
+                    android:text="+91"
+                    app:met_baseColor="@android:color/black"
+                    app:met_floatingLabel="none"
+                    app:met_primaryColor="#3F51B5"
+                    app:met_singleLineEllipsis="true"
+                    android:layout_below="@+id/textView2"
+                    android:layout_alignLeft="@+id/textView2"
+                    android:layout_alignStart="@+id/textView2" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_alignTop="@+id/button_next"
+                    android:background="@android:color/darker_gray" />
+
+                <Button
+                    android:id="@+id/button_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/transparent"
+                    android:text="next"
+                    android:textColor="@android:color/darker_gray" />
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
 
     </RelativeLayout>
-
 
 
 </FrameLayout>
