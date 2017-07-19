@@ -55,6 +55,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:background="@android:color/white">
 
                 <TextView
@@ -100,7 +102,9 @@
                     android:textSize="22sp"
                     app:met_baseColor="@android:color/black"
                     app:met_floatingLabel="none"
+                    app:met_clearButton="true"
                     app:met_primaryColor="#3F51B5"
+                    app:met_iconPadding="10dp"
                     app:met_singleLineEllipsis="true"
                     android:layout_below="@+id/textView2"
                     android:layout_alignLeft="@+id/textView2"

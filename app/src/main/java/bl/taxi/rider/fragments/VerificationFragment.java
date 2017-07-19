@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -61,15 +62,24 @@ public class VerificationFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                if (s.length() != 0)
+                /*if (s.length() != 0)
                     buttonClose.setVisibility(View.VISIBLE);
                 else
-                    buttonClose.setVisibility(View.GONE);
+                    buttonClose.setVisibility(View.GONE);*/
 
             }
         });
+
         return view;
     }
+
+    @OnClick(R.id.button_close)
+    public void one() {
+
+        Toast.makeText(getActivity(), "Working", Toast.LENGTH_SHORT).show();
+    }
+
+
 
     @Override
     public void onDestroyView() {
