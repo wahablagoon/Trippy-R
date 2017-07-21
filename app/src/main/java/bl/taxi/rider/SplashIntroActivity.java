@@ -21,8 +21,6 @@ import static android.R.attr.data;
 
 public class SplashIntroActivity extends IntroActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,10 +84,7 @@ public class SplashIntroActivity extends IntroActivity {
         setNavigationPolicy(new NavigationPolicy() {
             @Override
             public boolean canGoForward(int position) {
-                    if(position==2)
-                        return false;
-                    else
-                        return true;
+                return position != 2;
 
             }
 

@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:visibility="gone"
-                    android:onClick="onClick"
+                    android:onClick="one"
                     android:layout_marginTop="10dp"
                     android:layout_alignRight="@+id/mobile_number"
                     android:layout_alignTop="@+id/mobile_number"
