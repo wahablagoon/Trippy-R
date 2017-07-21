@@ -21,4 +21,7 @@
     <string name="we_need_your_mobile_number_to_book_you_a_ride">We need your mobile number to book you a ride</string>
     <string name="enter_mobile_number">Enter mobile number</string>
     <string name="google_api_connection_fail">Sorry, Connection to Google play services is failed. Try restart app or check play services</string>
+    <string name="next">next</string>
+    <string name="country_code">+91</string>
+    <string name="enter_a_valid_mobile_number">Enter a valid mobile number</string>
 </resources>

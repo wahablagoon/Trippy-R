@@ -15,7 +15,10 @@ public class SplashActivity extends AppCompatActivity {
 
         //Pass to Verification Fragment
         VerificationFragment fragment =  new VerificationFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        if (fragment != null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content_frame, fragment).commit();
+
+        }
     }
 }
