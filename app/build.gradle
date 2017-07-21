@@ -50,19 +50,20 @@ dependencies {
     compile "com.google.android.gms:play-services-places:$playServicesVersion"
     compile "com.google.android.gms:play-services-base:$playServicesVersion"
     //Multidex
-    //Retrofit2
-    //Google map Utils
-    //ButterKnife
-    //Slide show
-    //Google phone no validation
     compile 'com.android.support:multidex:1.0.1'
+    //Retrofit2
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    //Google map Utils
     compile 'com.google.maps.android:android-maps-utils:0.5'
+    //ButterKnife
     compile 'com.jakewharton:butterknife:8.7.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+    //Slide show
     compile 'com.heinrichreimersoftware:material-intro:1.6.2'
-    compile 'com.googlecode.libphonenumber:libphonenumber:8.6.0'
+    //Google phone no validation
+    compile 'com.googlecode.libphonenumber:libphonenumber:8.7.0'
+    //MaterialEditText
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
 }
