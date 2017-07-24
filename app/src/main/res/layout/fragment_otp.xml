@@ -100,16 +100,6 @@
             android:textColor="@color/colorPrimary"
             android:layout_below="@id/otp_number_edit"/>
 
-        <TextView
-            android:id="@+id/otp_count_down"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/otp_static"
-            android:textColor="@color/otp_text"
-            android:layout_above="@id/button_next"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -126,6 +116,16 @@
             android:enabled="false"
             android:text="@string/log_in"
             android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/otp_count_down"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/otp_static"
+            android:textColor="@color/otp_text"
+            android:layout_above="@id/button_next"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
 
     </RelativeLayout>
 
