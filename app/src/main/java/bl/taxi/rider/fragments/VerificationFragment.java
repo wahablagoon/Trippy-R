@@ -2,6 +2,7 @@ package bl.taxi.rider.fragments;
 
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -12,19 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import bl.taxi.rider.R;
-import bl.taxi.rider.smsVerifier.OnSmsCatchListener;
-import bl.taxi.rider.smsVerifier.SmsVerifyCatcher;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,7 +30,6 @@ import butterknife.Unbinder;
  * A simple {@link Fragment} subclass.
  */
 public class VerificationFragment extends Fragment {
-
 
     @BindView(R.id.button_back)
     ImageButton buttonBack;
@@ -46,12 +41,11 @@ public class VerificationFragment extends Fragment {
     @BindView(R.id.button_close)
     ImageButton buttonClose;
 
-    SmsVerifyCatcher smsVerifyCatcher;
+    String mobile_number;
 
     public VerificationFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,16 +53,6 @@ public class VerificationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_verification, container, false);
         unbinder = ButterKnife.bind(this, view);
-
-        smsVerifyCatcher = new SmsVerifyCatcher(getActivity(), new OnSmsCatchListener<String>() {
-            @Override
-            public void onSmsCatch(String message) {
-                String code = parseCode(message);//Parse verification code
-                mobileNumber.setText(code);//set code in edit text
-                //then you can send verification code to server
-            }
-        });
-        smsVerifyCatcher.setPhoneNumberFilter("VK-OLACAB");
 
         mobileNumber.addTextChangedListener(new TextWatcher() {
             @Override
@@ -101,7 +85,16 @@ public class VerificationFragment extends Fragment {
 
     @OnClick(R.id.button_next)
     public void setButtonNext() {
-        Toast.makeText(getActivity(), "Button Clicked", Toast.LENGTH_SHORT).show();
+        //save mobile number for passing it to next window
+        mobile_number = mobileNumber.getText().toString();
+
+        OTPFragment otpFragment = OTPFragment.newInstance();
+        Bundle arguments = new Bundle();
+        arguments.putString("otp_number", mobile_number);
+        otpFragment.setArguments(arguments);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().addToBackStack(null)
+                .replace(R.id.content_frame, otpFragment).commit();
     }
 
     @Override
@@ -110,26 +103,14 @@ public class VerificationFragment extends Fragment {
         unbinder.unbind();
     }
 
-    private String parseCode(String message) {
-        Pattern p = Pattern.compile("\\b\\d{4}\\b");
-        Matcher m = p.matcher(message);
-        String code = "";
-        while (m.find()) {
-            code = m.group(0);
-        }
-        return code;
-    }
-
     @Override
     public void onStart() {
         super.onStart();
-        smsVerifyCatcher.onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        smsVerifyCatcher.onStop();
     }
 
     private boolean isValidNumber() {
@@ -148,12 +129,7 @@ public class VerificationFragment extends Fragment {
                     System.err.println(e);
                 }
 
-                boolean isValid = phoneNumberUtil.isValidNumber(phoneNumber);
-                if (isValid) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return phoneNumberUtil.isValidNumber(phoneNumber);
             }
             setenabled(true, R.color.colorPrimary);
             return true;

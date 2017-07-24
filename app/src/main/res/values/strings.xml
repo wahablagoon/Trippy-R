@@ -2,6 +2,20 @@
     <string name="app_name">rider</string>
     <string name="title_activity_maps">Map</string>
 
+    <plurals name="numberOfSecondsRemaining">
+        <!--
+             As a developer, you should always supply "one" and "other"
+             strings. Your translators will know which strings are actually
+             needed for their language. Always include %d in "one" because
+             translators will need to use %d for languages where "one"
+             doesn't mean 1 (as explained above).
+          -->
+        <item quantity="one">You will get OTP by SMS in %d second</item>
+        <item quantity="other">You will get OTP by SMS in %d seconds</item>
+    </plurals>
+
+    <string name="otp_static">You will get OTP by SMS in 20 seconds</string>
+
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to use the \'my location\' feature, which shows your current location on the map.</string>
     <string name="location_permission_denied">This app requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings.</string>
@@ -24,4 +38,9 @@
     <string name="next">next</string>
     <string name="country_code">+91</string>
     <string name="enter_a_valid_mobile_number">Enter a valid mobile number</string>
+    <string name="verify_login"><![CDATA[Verify & login]]></string>
+    <string name="verify_auto">Please wait.\nWe will auto verify the OTP sent to</string>
+    <string name="log_in">LOG IN</string>
+    <string name="enter_4_digit_otp">Enter 4-digit OTP</string>
+    <string name="log_in_password">or log in with password</string>
 </resources>
