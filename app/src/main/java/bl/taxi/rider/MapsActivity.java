@@ -8,7 +8,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -33,10 +35,26 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import bl.taxi.rider.utils.InternetUtils;
 import bl.taxi.rider.utils.PermissionUtils;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,
         GoogleMap.OnMyLocationButtonClickListener {
+
+    @BindView(R.id.drawer_menu)
+    ImageView drawerMenu;
+
+    @BindView(R.id.map_toolbar)
+    Toolbar mapToolbar;
+
+    @BindView(R.id.map_fragment_container)
+    FrameLayout mapFragmentContainer;
+
+    // Material Drawer
+    Drawer drawer;
+    AccountHeader headerResult;
 
     private static final int GOOGLE_DEFAULT_ZOOM = 15;
     /**
@@ -45,8 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static boolean mPermissionRequested = false;
     Location mCurrentLocation;
     int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    ImageView drawer_menu;
-    Drawer drawer;
+
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
 
@@ -54,9 +71,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        ButterKnife.bind(this);
 
         // Create the AccountHeader
-        AccountHeader headerResult = new AccountHeaderBuilder()
+        headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.mipmap.splash_booking)
                 .addProfiles(
@@ -74,18 +92,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .withActivity(this)
                 .withAccountHeader(headerResult)
                 .withSelectedItem(-1)
-                /*.addDrawerItems(
-                        new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_home);,
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName(R.string.nav_book_ride).withIdentifier(1),
+                        new PrimaryDrawerItem().withName(R.string.nav_your_rides),
+                        new PrimaryDrawerItem().withName(R.string.nav_rate_card),
                         new DividerDrawerItem(),
-                        item2,
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings)
+                        new PrimaryDrawerItem().withName(R.string.nav_wallet),
+                        new PrimaryDrawerItem().withName(R.string.nav_payment),
+                        new PrimaryDrawerItem().withName(R.string.nav_offers),
+                        new DividerDrawerItem(),
+                        new PrimaryDrawerItem().withName(R.string.nav_emergency),
+                        new DividerDrawerItem(),
+                        new PrimaryDrawerItem().withName(R.string.nav_support)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
+                        return false;
                     }
-                })*/
+                })
                 .build();
 
         //Connect Googleclient Location API
@@ -152,7 +178,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
 
-            System.out.print("hello granted");
             // Access to the location has been granted to the app.
             if (mMap != null) {
 
@@ -264,6 +289,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    @OnClick(R.id.drawer_menu)
     public void drawerMenu(View view) {
         if (!drawer.isDrawerOpen())
             drawer.openDrawer();

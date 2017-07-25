@@ -75,7 +75,7 @@ public class OTPFragment extends Fragment {
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-        System.out.println("OTP Number"+getArguments().getString("otp_number"));
+        System.out.println("OTP Number" + getArguments().getString("otp_number"));
         //otpMobileNo.setText(getArguments().getString("otp_number"));
 
         smsVerifyCatcher = new SmsVerifyCatcher(getActivity(), new OnSmsCatchListener<String>() {

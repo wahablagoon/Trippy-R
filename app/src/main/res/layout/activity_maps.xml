@@ -6,8 +6,11 @@
     tools:context="bl.taxi.rider.MapsActivity">
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/map_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize">
+        android:layout_height="?android:attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/drawer_menu"
@@ -15,17 +18,23 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
-            android:onClick="drawerMenu"
             android:src="@drawable/ic_drawer_menu_black"
             tools:ignore="ContentDescription" />
 
     </android.support.v7.widget.Toolbar>
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <FrameLayout
+        android:id="@+id/map_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/map_toolbar">
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
 
 </RelativeLayout>

@@ -47,4 +47,12 @@
     <string name="font_regular">fonts/Quicksand-Regular.ttf</string>
     <string name="font_bold">fonts/Quicksand-Bold.ttf</string>
     <string name="font_light">fonts/Quicksand-Light.ttf</string>
+    <string name="nav_book_ride">Book Your Ride</string>
+    <string name="nav_your_rides">Your Rides</string>
+    <string name="nav_rate_card">Rate Card</string>
+    <string name="nav_wallet">Wallet</string>
+    <string name="nav_payment">Payments</string>
+    <string name="nav_offers"><![CDATA[Offers & Free Rides]]></string>
+    <string name="nav_emergency">Emergency Contacts</string>
+    <string name="nav_support">Support</string>
 </resources>

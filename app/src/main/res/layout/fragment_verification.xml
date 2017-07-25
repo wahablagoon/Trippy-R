@@ -1,9 +1,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_verification"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_verification"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="bl.taxi.rider.fragments.VerificationFragment">
 
 
@@ -17,47 +17,43 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="@android:color/white" />
+            android:background="@android:color/white">
 
-        <ImageButton
-            android:id="@+id/button_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/toolbar"
-            android:layout_alignTop="@+id/toolbar"
-            android:background="@null"
-            android:padding="10dp"
-            android:src="@drawable/ic_arrow_back_black_24dp" />
+            <ImageButton
+                android:id="@+id/button_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="10dp"
+                android:src="@drawable/ic_arrow_back_black_24dp" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/fl_fragment_container"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/button_back"
-            android:layout_toRightOf="@+id/button_back"
-            android:gravity="center"
-            fontPath="fonts/Quicksand-Bold.ttf"
-            tools:ignore="MissingPrefix"
-            android:text="@string/enter_mobile_number"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/textView"
+                fontPath="fonts/Quicksand-Bold.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:gravity="center"
+                android:text="@string/enter_mobile_number"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                tools:ignore="MissingPrefix" />
+
+        </android.support.v7.widget.Toolbar>
 
         <ProgressBar
+            android:id="@+id/progressBar"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/toolbar"
-            android:layout_alignLeft="@+id/toolbar"
-            android:indeterminateTint="@color/colorPrimary"
-            android:layout_alignRight="@+id/toolbar"
+            android:layout_alignBottom="@id/toolbar"
+            android:layout_alignLeft="@id/toolbar"
+            android:layout_alignRight="@id/toolbar"
+            android:layout_marginBottom="-7dp"
             android:indeterminate="true"
-            android:visibility="gone"
-            android:id="@+id/progressBar"
-            />
+            android:indeterminateTint="@color/colorPrimary"
+            android:visibility="visible" />
 
         <FrameLayout
             android:id="@+id/fl_fragment_container"
@@ -69,10 +65,9 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/white"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:background="@android:color/white">
-
+                android:focusableInTouchMode="true">
 
                 <TextView
                     android:id="@+id/textView2"
@@ -89,85 +84,83 @@
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
-                <ImageButton
-                    android:id="@+id/button_close"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:visibility="gone"
-                    android:layout_marginTop="10dp"
-                    android:layout_alignRight="@+id/mobile_number"
-                    android:layout_alignTop="@+id/mobile_number"
-                    android:src="@drawable/ic_close_black_24dp" />
-
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/mobile_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
+                    android:layout_alignLeft="@id/textView2"
+                    android:layout_alignStart="@id/textView2"
+                    android:layout_below="@id/textView2"
                     android:layout_marginEnd="30dp"
                     android:layout_marginRight="30dp"
-                    android:textSize="22sp"
+                    android:layout_marginTop="25dp"
                     android:hint="@string/_10_digit_mobile_number"
                     android:inputType="number"
-                    android:paddingStart="50dp"
-                    android:paddingRight="10dp"
+                    android:maxLength="10"
                     android:paddingEnd="10dp"
                     android:paddingLeft="50dp"
-                    android:maxLength="10"
+                    android:paddingRight="10dp"
+                    android:paddingStart="50dp"
+                    android:textSize="22sp"
                     app:met_baseColor="@android:color/black"
-                    app:met_floatingLabel="none"
                     app:met_clearButton="true"
-                    app:met_primaryColor="@color/colorPrimary"
+                    app:met_floatingLabel="none"
                     app:met_iconPadding="10dp"
-                    app:met_singleLineEllipsis="true"
-                    android:layout_below="@+id/textView2"
-                    android:layout_alignLeft="@+id/textView2"
-                    android:layout_alignStart="@+id/textView2" />
+                    app:met_primaryColor="@color/colorPrimary"
+                    app:met_singleLineEllipsis="true" />
+
+                <ImageButton
+                    android:id="@+id/button_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@id/mobile_number"
+                    android:layout_alignTop="@id/mobile_number"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_close_black_24dp"
+                    android:visibility="gone" />
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/country_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/textView2"
+                    android:layout_alignStart="@id/textView2"
+                    android:layout_below="@id/textView2"
                     android:layout_marginTop="25dp"
+                    android:enabled="false"
                     android:inputType="number"
                     android:maxLength="10"
-                    android:enabled="false"
-                    android:textSize="22sp"
                     android:text="@string/country_code"
+                    android:textSize="22sp"
                     app:met_baseColor="@android:color/black"
                     app:met_floatingLabel="none"
                     app:met_primaryColor="@color/colorPrimary"
-                    app:met_singleLineEllipsis="true"
-                    android:layout_below="@+id/textView2"
-                    android:layout_alignLeft="@+id/textView2"
-                    android:layout_alignStart="@+id/textView2" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignTop="@+id/button_next"
-                    android:background="@android:color/darker_gray" />
+                    app:met_singleLineEllipsis="true" />
 
                 <Button
                     android:id="@+id/button_next"
+                    fontPath="fonts/Quicksand-Bold.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:enabled="false"
-                    fontPath="fonts/Quicksand-Bold.ttf"
-                    tools:ignore="MissingPrefix"
                     android:background="@android:color/transparent"
+                    android:enabled="false"
                     android:text="@string/next"
-                    android:textColor="@android:color/darker_gray" />
+                    android:textColor="@android:color/darker_gray"
+                    tools:ignore="MissingPrefix" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_alignTop="@id/button_next"
+                    android:background="@android:color/darker_gray" />
 
             </RelativeLayout>
 
         </FrameLayout>
 
-
     </RelativeLayout>
-
 
 </FrameLayout>
