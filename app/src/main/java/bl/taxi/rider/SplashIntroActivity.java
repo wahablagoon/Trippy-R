@@ -1,5 +1,6 @@
 package bl.taxi.rider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import com.heinrichreimersoftware.materialintro.app.NavigationPolicy;
 import com.heinrichreimersoftware.materialintro.app.OnNavigationBlockedListener;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 import com.heinrichreimersoftware.materialintro.slide.Slide;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static android.R.attr.data;
 
@@ -74,8 +77,6 @@ public class SplashIntroActivity extends IntroActivity {
                     public void onClick(View v) {
                         Intent intent = new Intent(getApplicationContext(),SplashActivity.class);
                         startActivity(intent);
-
-                        nextSlide();
                     }
                 })
                 .build());
@@ -95,6 +96,11 @@ public class SplashIntroActivity extends IntroActivity {
         });
 
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
 

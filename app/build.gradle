@@ -66,5 +66,7 @@ dependencies {
     compile 'com.googlecode.libphonenumber:libphonenumber:8.7.0'
     //MaterialEditText
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    //Custom Font
+    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     testCompile 'junit:junit:4.12'
 }

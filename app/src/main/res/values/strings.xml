@@ -43,4 +43,8 @@
     <string name="log_in">LOG IN</string>
     <string name="enter_4_digit_otp">Enter 4-digit OTP</string>
     <string name="log_in_password">or log in with password</string>
+    <!--    Custom Fonts    -->
+    <string name="font_regular">fonts/Quicksand-Regular.ttf</string>
+    <string name="font_bold">fonts/Quicksand-Bold.ttf</string>
+    <string name="font_light">fonts/Quicksand-Light.ttf</string>
 </resources>

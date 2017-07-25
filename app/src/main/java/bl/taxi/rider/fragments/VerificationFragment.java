@@ -67,7 +67,6 @@ public class VerificationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!isValidNumber()) {
-                    mobileNumber.setError(getString(R.string.enter_a_valid_mobile_number));
                     setenabled(false, android.R.color.darker_gray);
                 } else {
                     setenabled(true, R.color.colorPrimary);
@@ -138,11 +137,9 @@ public class VerificationFragment extends Fragment {
 
     private boolean validatePhone() {
         if (mobileNumber.getText().toString().trim().isEmpty()) {
-            mobileNumber.setError(getString(R.string.enter_mobile_number));
             return false;
         } else if (!mobileNumber.getText().toString().trim().isEmpty()) {
             if (mobileNumber.getText().toString().substring(0, 1).matches("0")) {
-                mobileNumber.setError("Enter a valid number");
                 return false;
             } else {
                 int maxLengthofEditText = 10;
@@ -159,5 +156,6 @@ public class VerificationFragment extends Fragment {
         buttonNext.setEnabled(bool);
         buttonNext.setTextColor(ContextCompat.getColor(getActivity(), colorID));
     }
+
 
 }

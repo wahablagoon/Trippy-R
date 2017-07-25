@@ -16,7 +16,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="?android:attr/actionBarSize"
             android:background="@android:color/white" />
 
         <ImageButton
@@ -40,10 +40,11 @@
             android:layout_toEndOf="@+id/button_back"
             android:layout_toRightOf="@+id/button_back"
             android:gravity="center"
+            fontPath="fonts/Quicksand-Bold.ttf"
             android:text="@string/enter_mobile_number"
             android:textColor="@android:color/black"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            tools:ignore="MissingPrefix" />
 
         <FrameLayout
             android:id="@+id/fl_fragment_container"
