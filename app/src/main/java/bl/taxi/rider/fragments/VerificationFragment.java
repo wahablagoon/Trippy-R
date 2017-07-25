@@ -8,24 +8,33 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-import bl.taxi.rider.R;
+import java.util.List;
 
+import bl.taxi.rider.R;
+import bl.taxi.rider.controller.MyApplication;
+import bl.taxi.rider.interfaces.RetrofitAPI;
+import bl.taxi.rider.models.Model;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +52,8 @@ public class VerificationFragment extends Fragment {
     ImageButton buttonClose;
 
     String mobile_number;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     public VerificationFragment() {
         // Required empty public constructor
@@ -87,16 +98,47 @@ public class VerificationFragment extends Fragment {
 
     @OnClick(R.id.button_next)
     public void setButtonNext() {
+        buttonNext.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
         //save mobile number for passing it to next window
         mobile_number = mobileNumber.getText().toString();
 
-        OTPFragment otpFragment = OTPFragment.newInstance();
-        Bundle arguments = new Bundle();
-        arguments.putString("otp_number", mobile_number);
-        otpFragment.setArguments(arguments);
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().addToBackStack(null)
-                .replace(R.id.content_frame, otpFragment).commit();
+        RetrofitAPI service = MyApplication.getService();
+        Call<List<Model>> query = service.sendOTP("91", mobile_number);
+        query.enqueue(new Callback<List<Model>>() {
+            @Override
+            public void onResponse(Call<List<Model>> call, Response<List<Model>> response) {
+                buttonNext.setEnabled(true);
+                progressBar.setVisibility(View.GONE);
+                List<Model> result = response.body();
+                if (result.size() != 0) {
+                    for (int i = 0; i < result.size(); i++) {
+                        String responseStatus = result.get(i).getStatus();
+                        if (responseStatus.matches("Success")) {
+                            OTPFragment otpFragment = OTPFragment.newInstance();
+                            Bundle arguments = new Bundle();
+                            arguments.putString("otp_number", mobile_number);
+                            otpFragment.setArguments(arguments);
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().addToBackStack(null)
+                                    .replace(R.id.content_frame, otpFragment).commit();
+                        }
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Model>> call, Throwable t) {
+                buttonNext.setEnabled(true);
+                progressBar.setVisibility(View.GONE);
+                Log.e("Error", "retrofit", t);
+            }
+
+        });
+
+
     }
 
     @Override
