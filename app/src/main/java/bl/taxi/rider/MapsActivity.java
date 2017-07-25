@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -22,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import bl.taxi.rider.utils.InternetUtils;
 import bl.taxi.rider.utils.PermissionUtils;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -153,7 +153,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onResume() {
         super.onResume();
 
-        /*if (!InternetUtils.isOnline(getApplicationContext())) {
+        if (!InternetUtils.isOnline(getApplicationContext())) {
 
         }
 
@@ -170,7 +170,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.getUiSettings().setMyLocationButtonEnabled(false);
                 }
             }
-        }*/
+        }
     }
 
     /**
