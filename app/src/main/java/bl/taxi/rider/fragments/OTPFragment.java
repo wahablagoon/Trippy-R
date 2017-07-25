@@ -1,15 +1,19 @@
 package bl.taxi.rider.fragments;
 
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +21,9 @@ import java.util.regex.Pattern;
 import bl.taxi.rider.R;
 import bl.taxi.rider.smsVerifier.OnSmsCatchListener;
 import bl.taxi.rider.smsVerifier.SmsVerifyCatcher;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,11 +32,20 @@ import bl.taxi.rider.smsVerifier.SmsVerifyCatcher;
  */
 public class OTPFragment extends Fragment {
 
-    TextView otpCountDown, otpMobileNo, otpNumberEdit;
-
     SmsVerifyCatcher smsVerifyCatcher;
 
     CountDownTimer OTP_countDownTimer;
+    @BindView(R.id.otp_button_back)
+    ImageButton otpButtonBack;
+    @BindView(R.id.otp_mobile_no)
+    TextView otpMobileNo;
+    @BindView(R.id.otp_number_edit)
+    MaterialEditText otpNumberEdit;
+    @BindView(R.id.button_next)
+    Button buttonNext;
+    @BindView(R.id.otp_count_down)
+    TextView otpCountDown;
+    Unbinder unbinder;
 
     public OTPFragment() {
         // Required empty public constructor
@@ -58,22 +74,21 @@ public class OTPFragment extends Fragment {
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-        otpCountDown = (TextView) otpFragment.findViewById(R.id.otp_count_down);
-        otpMobileNo = (TextView) otpFragment.findViewById(R.id.otp_mobile_no);
-        otpNumberEdit = (TextView) otpFragment.findViewById(R.id.otp_number_edit);
-
-        otpMobileNo.setText(getArguments().getString("otp_number"));
+        System.out.println("OTP Number"+getArguments().getString("otp_number"));
+        //otpMobileNo.setText(getArguments().getString("otp_number"));
 
         smsVerifyCatcher = new SmsVerifyCatcher(getActivity(), new OnSmsCatchListener<String>() {
             @Override
             public void onSmsCatch(String message) {
                 String code = parseCode(message);//Parse verification code
                 otpNumberEdit.setText(code);//set code in edit text
+                otpNumberEdit.setSelection(code.length());
                 //then you can send verification code to server
             }
         });
         smsVerifyCatcher.setPhoneNumberFilter("VK-OLACAB");
 
+        unbinder = ButterKnife.bind(this, otpFragment);
         return otpFragment;
     }
 
@@ -115,5 +130,11 @@ public class OTPFragment extends Fragment {
             code = m.group(0);
         }
         return code;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

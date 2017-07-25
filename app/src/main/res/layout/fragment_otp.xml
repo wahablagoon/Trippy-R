@@ -12,7 +12,7 @@
 
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="?android:attr/actionBarSize"
             android:background="@android:color/white">
 
             <ImageButton
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:text="@string/log_in_password"
             android:layout_marginTop="5dp"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textSize="18sp"
             android:textColor="@color/colorPrimary"
             android:layout_below="@id/otp_number_edit"/>
 
