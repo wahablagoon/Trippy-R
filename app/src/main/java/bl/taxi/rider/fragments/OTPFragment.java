@@ -29,6 +29,8 @@ public class OTPFragment extends Fragment {
 
     SmsVerifyCatcher smsVerifyCatcher;
 
+    CountDownTimer OTP_countDownTimer;
+
     public OTPFragment() {
         // Required empty public constructor
     }
@@ -79,7 +81,7 @@ public class OTPFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        new CountDownTimer(20000, 1000) {
+        OTP_countDownTimer = new CountDownTimer(20000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 otpCountDown.setText(getResources().getQuantityString(R.plurals.numberOfSecondsRemaining,
@@ -96,6 +98,7 @@ public class OTPFragment extends Fragment {
     public void onStop() {
         super.onStop();
         smsVerifyCatcher.onStop();
+        OTP_countDownTimer.cancel();
     }
 
     @Override
