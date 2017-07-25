@@ -43,6 +43,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$AndroidSupportVersion"
     compile "com.android.support:design:$AndroidSupportVersion"
     compile "com.android.support:support-v4:$AndroidSupportVersion"
+    compile "com.android.support:support-v13:$AndroidSupportVersion"
     //Play Services
     compile "com.google.android.gms:play-services-location:$playServicesVersion"
     compile "com.google.android.gms:play-services-maps:$playServicesVersion"
@@ -68,5 +69,9 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     //Custom Font
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+    // Material Drawer
+    compile('com.mikepenz:materialdrawer:5.9.4@aar') {
+        transitive = true
+    }
     testCompile 'junit:junit:4.12'
 }
