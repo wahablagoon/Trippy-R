@@ -39,9 +39,9 @@
     <string name="country_code">+91</string>
     <string name="enter_a_valid_mobile_number">Enter a valid mobile number</string>
     <string name="verify_login"><![CDATA[Verify & login]]></string>
-    <string name="verify_auto">Please wait.\nWe will auto verify the OTP sent to</string>
+    <string name="verify_auto">Please wait.\nWe will auto verify the OTP sent to 10-digit mobile number</string>
     <string name="log_in">LOG IN</string>
-    <string name="enter_4_digit_otp">Enter 4-digit OTP</string>
+    <string name="enter_4_digit_otp"><font size="18">Enter 4-digit OTP</font></string>
     <string name="log_in_password">or log in with password</string>
     <!--    Custom Fonts    -->
     <string name="font_regular">fonts/Quicksand-Regular.ttf</string>

@@ -23,6 +23,7 @@ import bl.taxi.rider.smsVerifier.OnSmsCatchListener;
 import bl.taxi.rider.smsVerifier.SmsVerifyCatcher;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -86,7 +87,7 @@ public class OTPFragment extends Fragment {
                 //then you can send verification code to server
             }
         });
-        smsVerifyCatcher.setPhoneNumberFilter("VK-OLACAB");
+        smsVerifyCatcher.setPhoneNumberFilter("51465");
 
         unbinder = ButterKnife.bind(this, otpFragment);
         return otpFragment;
@@ -96,7 +97,7 @@ public class OTPFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        OTP_countDownTimer = new CountDownTimer(20000, 1000) {
+        OTP_countDownTimer = new CountDownTimer(25000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 otpCountDown.setText(getResources().getQuantityString(R.plurals.numberOfSecondsRemaining,
@@ -136,5 +137,10 @@ public class OTPFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @OnClick(R.id.otp_button_back)
+    public void setButtonBack() {
+        getFragmentManager().popBackStack();
     }
 }

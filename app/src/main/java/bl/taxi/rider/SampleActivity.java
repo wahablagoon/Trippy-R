@@ -55,7 +55,7 @@ public class SampleActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Model>> call, Throwable t) {
 
-                Log.e("Sample", "retrofit", t);
+                Log.e("Error", "retrofit", t);
             }
 
         });
