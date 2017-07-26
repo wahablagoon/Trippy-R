@@ -1,7 +1,9 @@
 package bl.taxi.rider;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -12,21 +14,32 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -36,7 +49,6 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import bl.taxi.rider.utils.Constants;
 import bl.taxi.rider.utils.InternetUtils;
 import bl.taxi.rider.utils.PermissionUtils;
 import butterknife.BindView;
@@ -47,39 +59,43 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    @BindView(R.id.drawer_menu)
-    ImageView drawerMenu;
-
-    @BindView(R.id.map_toolbar)
-    Toolbar mapToolbar;
-
-    @BindView(R.id.map_fragment_container)
-    FrameLayout mapFragmentContainer;
-
-    // Material Drawer
-    Drawer drawer;
-    AccountHeader headerResult;
-
     private static final int GOOGLE_DEFAULT_ZOOM = 15;
     /**
      * Flag indicating whether a permission is already requested or not
      */
     private static boolean mPermissionRequested = false;
-    Location mCurrentLocation;
-    int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    @BindView(R.id.drawer_menu)
+    ImageView drawerMenu;
+    @BindView(R.id.map_toolbar)
+    Toolbar mapToolbar;
+    @BindView(R.id.map_fragment_container)
+    FrameLayout mapFragmentContainer;
     @BindView(R.id.myLocationButton)
     RelativeLayout myLocationButton;
-
+    // Material Drawer
+    Drawer drawer;
+    AccountHeader headerResult;
+    Location mCurrentLocation;
+    private int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
     private boolean mResolvingError = false;
     private int REQUEST_RESOLVE_ERROR = 33;
+    private String TAG = "MapsActivity";
+    private SettingsClient mSettingsClient;
+    /**
+     * Constant used in the location settings dialog.
+     */
+    private static final int REQUEST_CHECK_SETTINGS = 0x1;
+    private boolean mSettingsAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         ButterKnife.bind(this);
+
+        mSettingsClient = LocationServices.getSettingsClient(this);
 
         // Create the AccountHeader
         headerResult = new AccountHeaderBuilder()
@@ -181,12 +197,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        if ((ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-            enableMyLocation();
-        }
-
     }
 
     /**
@@ -198,27 +208,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 == PackageManager.PERMISSION_GRANTED) {
 
             // Access to the location has been granted to the app.
-            if (mMap != null) {
 
-                Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
 
-                if (mLastLocation != null) {
-                    mCurrentLocation = mLastLocation;
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(),
-                                    mLastLocation.getLongitude()),
-                            GOOGLE_DEFAULT_ZOOM));
-                }
-
-                LocationRequest mLocationRequest = new LocationRequest();
-                mLocationRequest.setInterval(10000); //10 seconds
-                mLocationRequest.setFastestInterval(5000); //5 seconds
-                mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-                // Avoid Duplicate Listeners
-                LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-
-                LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
+            if (mLastLocation != null && mMap != null) {
+                mCurrentLocation = mLastLocation;
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(),
+                                mLastLocation.getLongitude()),
+                        GOOGLE_DEFAULT_ZOOM));
             }
+
+            LocationRequest mLocationRequest = new LocationRequest();
+            mLocationRequest.setInterval(10000); //10 seconds
+            mLocationRequest.setFastestInterval(5000); //5 seconds
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+            // Avoid Duplicate Listeners
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
 
         } else {
 
@@ -244,12 +252,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         if (PermissionUtils.isPermissionGranted(permissions, grantResults,
-                Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Manifest.permission.ACCESS_FINE_LOCATION) && googleApiClient.isConnected()) {
             // Enable the my location layer if the permission has been granted.
             enableMyLocation();
         } else {
             // Display the missing permission error dialog when the fragments resume.
             showMissingPermissionError();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            // Check for the integer request code originally supplied to startResolutionForResult().
+            case REQUEST_CHECK_SETTINGS:
+                switch (resultCode) {
+                    case FragmentActivity.RESULT_OK:
+                        Log.i(TAG, "User agreed to make required location settings changes.");
+                        mSettingsAvailable = true;
+                        // Nothing to do. startLocationupdates() gets called in onResume again.
+                        break;
+                    case FragmentActivity.RESULT_CANCELED:
+                        Log.i(TAG, "User chose not to make required location settings changes.");
+                        mSettingsAvailable = false;
+                        break;
+                }
+                break;
         }
     }
 
@@ -280,6 +308,60 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         }
+    }
+
+    /**
+     * Requests location updates from the FusedLocationApi. Note: we don't call this unless location
+     * runtime permission has been granted.
+     */
+    private void checkLocationSettings() {
+
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000); //10 seconds
+        mLocationRequest.setFastestInterval(5000); //5 seconds
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        LocationSettingsRequest mLocationSettingsRequest = builder.build();
+
+        // Begin by checking if the device has the necessary location settings.
+        mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
+                .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+                    @Override
+                    public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                        Log.i(TAG, "All location settings are satisfied.");
+
+                        //noinspection MissingPermission
+                        mSettingsAvailable = true;
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        int statusCode = ((ApiException) e).getStatusCode();
+                        switch (statusCode) {
+                            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                                Log.i(TAG, "Location settings are not satisfied. Attempting to upgrade " +
+                                        "location settings ");
+                                try {
+                                    // Show the dialog by calling startResolutionForResult(), and check the
+                                    // result in onActivityResult().
+                                    ResolvableApiException rae = (ResolvableApiException) e;
+                                    rae.startResolutionForResult(MapsActivity.this, REQUEST_CHECK_SETTINGS);
+                                } catch (IntentSender.SendIntentException sie) {
+                                    Log.i(TAG, "PendingIntent unable to execute request.");
+                                }
+                                break;
+                            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                                String errorMessage = "Location settings are inadequate, and cannot be " +
+                                        "fixed here. Fix in Settings.";
+                                Log.e(TAG, errorMessage);
+                                Toast.makeText(MapsActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                                mSettingsAvailable = false;
+                        }
+                    }
+                });
     }
 
     @Override
