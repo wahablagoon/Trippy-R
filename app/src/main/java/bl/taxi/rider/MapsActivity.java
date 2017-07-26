@@ -2,6 +2,7 @@ package bl.taxi.rider;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -31,7 +32,6 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -70,6 +70,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
+    private boolean mResolvingError = false;
+    private int REQUEST_RESOLVE_ERROR = 33;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +146,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(MapsActivity.this, R.string.google_api_connection_fail, Toast.LENGTH_LONG).show();
+        if (mResolvingError) {
+            // Already attempting to resolve an error.
+            return;
+        } else if (connectionResult.hasResolution()) {
+            try {
+                mResolvingError = true;
+                connectionResult.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
+            } catch (IntentSender.SendIntentException e) {
+                // There was an error with the resolution intent. Try again.
+                googleApiClient.connect();
+            }
+        } else {
+            // Show dialog using GooglePlayServicesUtil.getErrorDialog()
+            //GooglePlayServicesUtil.getErrorDialog()(connectionResult.getErrorCode());
+            Toast.makeText(MapsActivity.this, R.string.google_api_connection_fail, Toast.LENGTH_LONG).show();
+            mResolvingError = true;
+        }
     }
 
     /**
@@ -172,12 +190,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onMyLocationButtonClick() {
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return true;
-
-        }
-        return false;
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED;
     }
 
     /**
@@ -204,9 +218,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
                 LocationRequest mLocationRequest = new LocationRequest();
-                mLocationRequest.setInterval(5000); //5 seconds
-                mLocationRequest.setFastestInterval(3000); //3 seconds
-                mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+                mLocationRequest.setInterval(10000); //10 seconds
+                mLocationRequest.setFastestInterval(5000); //5 seconds
+                mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
                 // Avoid Duplicate Listeners
                 LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
