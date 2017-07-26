@@ -1,7 +1,6 @@
 package bl.taxi.rider;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -50,6 +49,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import bl.taxi.rider.utils.InternetUtils;
+import bl.taxi.rider.utils.LogUtils;
 import bl.taxi.rider.utils.PermissionUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,9 +61,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final int GOOGLE_DEFAULT_ZOOM = 15;
     /**
+     * Constant used in the location settings dialog.
+     */
+    private static final int REQUEST_CHECK_SETTINGS = 0x1;
+    // Play services request code
+    private static final int REQUEST_RESOLVE_ERROR = 33;
+    /**
      * Flag indicating whether a permission is already requested or not
      */
     private static boolean mPermissionRequested = false;
+    private static boolean mPermissionGranted = false;
+    private static boolean mPlayServicesConnected = false;
     @BindView(R.id.drawer_menu)
     ImageView drawerMenu;
     @BindView(R.id.map_toolbar)
@@ -80,14 +88,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
     private boolean mResolvingError = false;
-    private int REQUEST_RESOLVE_ERROR = 33;
     private String TAG = "MapsActivity";
     private SettingsClient mSettingsClient;
-    /**
-     * Constant used in the location settings dialog.
-     */
-    private static final int REQUEST_CHECK_SETTINGS = 0x1;
     private boolean mSettingsAvailable = false;
+    private boolean mExecutedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +157,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        mPlayServicesConnected = true;
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -168,7 +173,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         if (mResolvingError) {
             // Already attempting to resolve an error.
-            return;
+            LogUtils.debug("play services resolving", null);
         } else if (connectionResult.hasResolution()) {
             try {
                 mResolvingError = true;
@@ -254,7 +259,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (PermissionUtils.isPermissionGranted(permissions, grantResults,
                 Manifest.permission.ACCESS_FINE_LOCATION) && googleApiClient.isConnected()) {
             // Enable the my location layer if the permission has been granted.
-            enableMyLocation();
+            mPermissionGranted = true;
+            checkLocationSettings();
         } else {
             // Display the missing permission error dialog when the fragments resume.
             showMissingPermissionError();
@@ -270,7 +276,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     case FragmentActivity.RESULT_OK:
                         Log.i(TAG, "User agreed to make required location settings changes.");
                         mSettingsAvailable = true;
-                        // Nothing to do. startLocationupdates() gets called in onResume again.
+                        if (!mExecutedOnce) {
+                            enableMyLocation();
+                        }
+                        mExecutedOnce = true;
                         break;
                     case FragmentActivity.RESULT_CANCELED:
                         Log.i(TAG, "User chose not to make required location settings changes.");
@@ -278,6 +287,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         break;
                 }
                 break;
+            case REQUEST_RESOLVE_ERROR:
+                switch (resultCode) {
+                }
         }
     }
 
@@ -306,6 +318,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
                             Manifest.permission.ACCESS_FINE_LOCATION, getString(R.string.permission_rationale_location), true);
                 }
+            } else {
+                mPermissionGranted = true;
+                checkLocationSettings();
             }
         }
     }
@@ -334,6 +349,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         //noinspection MissingPermission
                         mSettingsAvailable = true;
+                        if (!mExecutedOnce) {
+                            enableMyLocation();
+                        }
+                        mExecutedOnce = true;
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
@@ -393,7 +412,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @OnClick(R.id.myLocationButton)
     public void onMyLocation(View view) {
 
-        if (mCurrentLocation != null) {
+        if (mCurrentLocation != null && mMap != null) {
 
             LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
 
