@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -25,17 +26,18 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import bl.taxi.rider.utils.Constants;
 import bl.taxi.rider.utils.InternetUtils;
 import bl.taxi.rider.utils.PermissionUtils;
 import butterknife.BindView;
@@ -44,8 +46,7 @@ import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,
-        GoogleMap.OnMyLocationButtonClickListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     @BindView(R.id.drawer_menu)
     ImageView drawerMenu;
@@ -67,6 +68,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static boolean mPermissionRequested = false;
     Location mCurrentLocation;
     int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    @BindView(R.id.myLocationButton)
+    RelativeLayout myLocationButton;
 
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
@@ -81,9 +84,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withCompactStyle(true)
+                /*.withTextColor(ResourcesCompat.getColor(getResources(),R.color.otp_text,null))*/
+                .withHeaderBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorPrimary, null))
                 .withSelectionListEnabledForSingleProfile(false)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("Mike Penz").withTextColor(getResources().getColor(R.color.colorPrimary)).withIcon(getResources().getDrawable(R.drawable.ic_account_circle))
+                        new ProfileDrawerItem().withName("STR").withEmail("msg2thirumalai@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_account_circle))
                 )
                 /*.withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -98,17 +103,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .withAccountHeader(headerResult)
                 .withSelectedItem(-1)
                 .addDrawerItems(
-                        new SecondaryDrawerItem().withName(R.string.nav_book_ride).withIdentifier(1).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_local_taxi_black_24dp,null)),
-                        new SecondaryDrawerItem().withName(R.string.nav_your_rides).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_access_time_black_24dp,null)),
-                        new SecondaryDrawerItem().withName(R.string.nav_rate_card).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_local_ratecard,null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_book_ride).withIdentifier(1).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_local_taxi_black_24dp, null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_your_rides).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_access_time_black_24dp, null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_rate_card).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_local_ratecard, null)),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(R.string.nav_wallet).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_local_wallet_24dp,null)),
-                        new SecondaryDrawerItem().withName(R.string.nav_payment).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_credit_card_black_24dp,null)),
-                        new SecondaryDrawerItem().withName(R.string.nav_offers).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_local_offer,null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_wallet).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_local_wallet_24dp, null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_payment).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_credit_card_black_24dp, null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_offers).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_local_offer, null)),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(R.string.nav_emergency).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_folder_shared_black_24dp,null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_emergency).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_folder_shared_black_24dp, null)),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(R.string.nav_support).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_chat_bubble_outline_black_24dp,null))
+                        new SecondaryDrawerItem().withName(R.string.nav_support).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_chat_bubble_outline_black_24dp, null))
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -160,24 +165,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        if (!mMap.getUiSettings().isMyLocationButtonEnabled() & (ContextCompat.checkSelfPermission(this,
+        if ((ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
             enableMyLocation();
         }
 
-        mMap.setOnMyLocationButtonClickListener(this);
-    }
-
-    @Override
-    public boolean onMyLocationButtonClick() {
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return true;
-
-        }
-        return false;
     }
 
     /**
@@ -190,9 +182,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             // Access to the location has been granted to the app.
             if (mMap != null) {
-
-                mMap.setMyLocationEnabled(true);
-                mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
                 Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
 
@@ -300,6 +289,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void drawerMenu(View view) {
         if (!drawer.isDrawerOpen())
             drawer.openDrawer();
+    }
+
+    @OnClick(R.id.myLocationButton)
+    public void onMyLocation(View view) {
+
+        if (mCurrentLocation != null) {
+
+            LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(latLng)                              // Sets the center of the map to current location
+                    .zoom(GOOGLE_DEFAULT_ZOOM)
+                    .tilt(0)                                     // Sets the tilt of the camera to 0 degrees
+                    .build();
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        }
     }
 
     @Override
