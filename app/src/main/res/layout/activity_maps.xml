@@ -10,18 +10,29 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:layout_alignParentTop="true"
+        android:elevation="10dp"
+
         android:background="@android:color/white">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TRIPPY"
+            fontPath="fonts/Quicksand-Bold.ttf"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:id="@+id/toolbar_title" />
 
         <ImageView
             android:id="@+id/drawer_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginStart="30dp"
+            android:padding="5dp"
             android:src="@drawable/ic_drawer_menu_black"
             tools:ignore="ContentDescription" />
 
     </android.support.v7.widget.Toolbar>
+
 
     <FrameLayout
         android:id="@+id/map_fragment_container"

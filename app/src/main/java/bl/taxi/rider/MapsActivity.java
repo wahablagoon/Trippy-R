@@ -1,6 +1,7 @@
 package bl.taxi.rider;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -31,6 +33,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import bl.taxi.rider.utils.InternetUtils;
@@ -38,6 +41,7 @@ import bl.taxi.rider.utils.PermissionUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,
@@ -76,9 +80,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Create the AccountHeader
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
-                .withHeaderBackground(R.mipmap.splash_booking)
+                .withCompactStyle(true)
+                .withSelectionListEnabledForSingleProfile(false)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_account_circle))
+                        new ProfileDrawerItem().withName("Mike Penz").withTextColor(getResources().getColor(R.color.colorPrimary)).withIcon(getResources().getDrawable(R.drawable.ic_account_circle))
                 )
                 /*.withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -93,17 +98,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .withAccountHeader(headerResult)
                 .withSelectedItem(-1)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.nav_book_ride).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.nav_your_rides),
-                        new PrimaryDrawerItem().withName(R.string.nav_rate_card),
+                        new SecondaryDrawerItem().withName(R.string.nav_book_ride).withIdentifier(1).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_local_taxi_black_24dp,null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_your_rides).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_access_time_black_24dp,null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_rate_card).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_local_ratecard,null)),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName(R.string.nav_wallet),
-                        new PrimaryDrawerItem().withName(R.string.nav_payment),
-                        new PrimaryDrawerItem().withName(R.string.nav_offers),
+                        new SecondaryDrawerItem().withName(R.string.nav_wallet).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_local_wallet_24dp,null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_payment).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_credit_card_black_24dp,null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_offers).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_local_offer,null)),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName(R.string.nav_emergency),
+                        new SecondaryDrawerItem().withName(R.string.nav_emergency).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_folder_shared_black_24dp,null)),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName(R.string.nav_support)
+                        new SecondaryDrawerItem().withName(R.string.nav_support).withIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_chat_bubble_outline_black_24dp,null))
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -167,6 +172,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onMyLocationButtonClick() {
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            return true;
+
+        }
         return false;
     }
 
@@ -261,9 +271,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mPermissionRequested = true;
                     PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
                             Manifest.permission.ACCESS_FINE_LOCATION, getString(R.string.permission_rationale_location), true);
-                } else if (InternetUtils.isOnline(getApplicationContext())) {
-                    mMap.setMyLocationEnabled(false);
-                    mMap.getUiSettings().setMyLocationButtonEnabled(false);
                 }
             }
         }
@@ -293,5 +300,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void drawerMenu(View view) {
         if (!drawer.isDrawerOpen())
             drawer.openDrawer();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }
