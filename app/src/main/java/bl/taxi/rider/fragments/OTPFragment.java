@@ -2,6 +2,7 @@ package bl.taxi.rider.fragments;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import bl.taxi.rider.MapsActivity;
 import bl.taxi.rider.R;
 import bl.taxi.rider.smsVerifier.OnSmsCatchListener;
 import bl.taxi.rider.smsVerifier.SmsVerifyCatcher;
@@ -42,7 +44,7 @@ public class OTPFragment extends Fragment {
     TextView otpMobileNo;
     @BindView(R.id.otp_number_edit)
     MaterialEditText otpNumberEdit;
-    @BindView(R.id.button_next)
+    @BindView(R.id.button_log_in)
     Button buttonNext;
     @BindView(R.id.otp_count_down)
     TextView otpCountDown;
@@ -142,5 +144,11 @@ public class OTPFragment extends Fragment {
     @OnClick(R.id.otp_button_back)
     public void setButtonBack() {
         getFragmentManager().popBackStack();
+    }
+
+    @OnClick(R.id.button_log_in)
+    public void setButtonNext() {
+        Intent intent = new Intent(getActivity(), MapsActivity.class);
+        startActivity(intent);
     }
 }

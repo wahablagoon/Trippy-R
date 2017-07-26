@@ -53,7 +53,7 @@
             android:layout_marginBottom="-7dp"
             android:indeterminate="true"
             android:indeterminateTint="@color/colorPrimary"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <FrameLayout
             android:id="@+id/fl_fragment_container"
