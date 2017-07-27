@@ -1,8 +1,9 @@
 package bl.taxi.rider;
 
 import android.Manifest;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -16,13 +17,14 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -49,9 +51,10 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import bl.taxi.rider.fragments.ProfileFragment;
 import bl.taxi.rider.utils.InternetUtils;
-import bl.taxi.rider.utils.LogUtils;
 import bl.taxi.rider.utils.PermissionUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,12 +71,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int REQUEST_CHECK_SETTINGS = 0x1;
     // Play services request code
     private static final int REQUEST_RESOLVE_ERROR = 33;
+    static boolean mPermissionGranted = false;
+    static boolean mPlayServicesConnected = false;
     /**
      * Flag indicating whether a permission is already requested or not
      */
     private static boolean mPermissionRequested = false;
-    private static boolean mPermissionGranted = false;
-    private static boolean mPlayServicesConnected = false;
     @BindView(R.id.drawer_menu)
     ImageView drawerMenu;
     @BindView(R.id.map_toolbar)
@@ -86,13 +89,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Drawer drawer;
     AccountHeader headerResult;
     Location mCurrentLocation;
+    boolean mSettingsAvailable = false;
     private int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
     private boolean mResolvingError = false;
-    private String TAG = "MapsActivity";
+    private String TAG = this.getClass().getSimpleName();
     private SettingsClient mSettingsClient;
-    private boolean mSettingsAvailable = false;
     private boolean mExecutedOnce = false;
 
     @Override
@@ -107,18 +110,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withCompactStyle(true)
-                /*.withTextColor(ResourcesCompat.getColor(getResources(),R.color.otp_text,null))*/
                 .withHeaderBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorPrimary, null))
                 .withSelectionListEnabledForSingleProfile(false)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("STR").withEmail("msg2thirumalai@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_account_circle))
+                        new ProfileDrawerItem().withName("STR").withEmail("msg2thirumalai@gmail.com").withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_account_circle, null))
                 )
-                /*.withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                .withOnAccountHeaderSelectionViewClickListener(new AccountHeader.OnAccountHeaderSelectionViewClickListener() {
                     @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                        return false;
+                    public boolean onClick(View view, IProfile profile) {
+                        if(drawer.isDrawerOpen())
+                            drawer.closeDrawer();
+                        Fragment newFragment = ProfileFragment.newInstance();
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        transaction.replace(((ViewGroup)findViewById(R.id.map_container).getParent()).getId(), newFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                        return true;
                     }
-                })*/
+                })
                 .build();
 
         drawer = new DrawerBuilder()
@@ -147,7 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 })
                 .build();
 
-        //Connect Googleclient Location API
+        //Connect Google client Location API
         googleApiClient = new GoogleApiClient.Builder(MapsActivity.this)
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
@@ -175,7 +184,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         if (mResolvingError) {
             // Already attempting to resolve an error.
-            Log.d("PlayServiceresolving", connectionResult.getErrorMessage());
+            Log.d("Play Service resolving", connectionResult.getErrorMessage());
         } else if (connectionResult.hasResolution()) {
             try {
                 mResolvingError = true;
@@ -186,8 +195,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         } else {
             // Show dialog using GooglePlayServicesUtil.getErrorDialog()
-            GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(),
-                    MapsActivity.this, REQUEST_RESOLVE_ERROR);
+            GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+            apiAvailability.getErrorDialog(this, connectionResult.getErrorCode(), REQUEST_RESOLVE_ERROR).show();
             //Toast.makeText(MapsActivity.this, R.string.google_api_connection_fail, Toast.LENGTH_LONG).show();
             mResolvingError = true;
         }
@@ -209,7 +218,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         checkRequestPermission();
     }
 
-    private void checkRequestPermission () {
+    private void checkRequestPermission() {
 
         if (InternetUtils.isOnline(getApplicationContext())) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -321,9 +330,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onResume() {
         super.onResume();
 
-        if (!InternetUtils.isOnline(getApplicationContext())) {
+      /*  if (!InternetUtils.isOnline(getApplicationContext())) {
 
-        }
+        }*/
     }
 
     /**
@@ -388,7 +397,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onDestroy() {
         super.onDestroy();
 
-        //Disconnect Googleclient Location API and remove Listeners for this Activity
+        //Disconnect Google client Location API and remove Listeners for this Activity
         if (googleApiClient != null) {
             googleApiClient.unregisterConnectionCallbacks(this);
             googleApiClient.unregisterConnectionFailedListener(this);

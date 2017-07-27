@@ -82,9 +82,9 @@ public class VerificationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!isValidNumber()) {
-                    setenabled(false, android.R.color.darker_gray);
+                    setEnabled(false, android.R.color.darker_gray);
                 } else {
-                    setenabled(true, R.color.colorPrimary);
+                    setEnabled(true, R.color.colorPrimary);
                 }
             }
         });
@@ -171,7 +171,7 @@ public class VerificationFragment extends Fragment {
 
                 return phoneNumberUtil.isValidNumber(phoneNumber);
             }
-            setenabled(true, R.color.colorPrimary);
+            setEnabled(true, R.color.colorPrimary);
             return true;
         }
     }
@@ -183,8 +183,8 @@ public class VerificationFragment extends Fragment {
             if (mobileNumber.getText().toString().substring(0, 1).matches("0")) {
                 return false;
             } else {
-                int maxLengthofEditText = 10;
-                mobileNumber.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLengthofEditText)});
+                int maxLengthOfEditText = 10;
+                mobileNumber.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLengthOfEditText)});
                 mobileNumber.setError(null);
             }
             return true;
@@ -193,7 +193,7 @@ public class VerificationFragment extends Fragment {
         return true;
     }
 
-    public void setenabled(boolean bool, int colorID) {
+    public void setEnabled(boolean bool, int colorID) {
         buttonNext.setEnabled(bool);
         buttonNext.setTextColor(ContextCompat.getColor(getActivity(), colorID));
     }

@@ -2,25 +2,14 @@ package bl.taxi.rider;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.TypefaceSpan;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.app.NavigationPolicy;
-import com.heinrichreimersoftware.materialintro.app.OnNavigationBlockedListener;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
-import com.heinrichreimersoftware.materialintro.slide.Slide;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
-import static android.R.attr.data;
 
 public class SplashIntroActivity extends IntroActivity {
 
