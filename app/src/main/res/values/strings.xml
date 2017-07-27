@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">rider</string>
+    <string name="app_name_caps">TRIPPY</string>
     <string name="title_activity_maps">Map</string>
 
     <plurals name="numberOfSecondsRemaining">
@@ -55,4 +56,12 @@
     <string name="nav_offers"><![CDATA[Offers & Free Rides]]></string>
     <string name="nav_emergency">Emergency Contacts</string>
     <string name="nav_support">Support</string>
+    <string name="mobile_number_text">Mobile Number</string>
+    <string name="email_text">Email</string>
+    <string name="password_text">Password</string>
+    <string name="profile_name_hint">Profile name</string>
+    <string name="name_text">Name</string>
+    <string name="password_hint">Password</string>
+    <string name="email_address_hint">Email address</string>
+    <string name="log_out">LOGOUT</string>
 </resources>
