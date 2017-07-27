@@ -64,6 +64,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    // Constant request codes for onactivity result
     private static final int GOOGLE_DEFAULT_ZOOM = 15;
     /**
      * Constant used in the location settings dialog.
@@ -71,12 +72,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int REQUEST_CHECK_SETTINGS = 0x1;
     // Play services request code
     private static final int REQUEST_RESOLVE_ERROR = 33;
+
     static boolean mPermissionGranted = false;
     static boolean mPlayServicesConnected = false;
+
     /**
      * Flag indicating whether a permission is already requested or not
      */
     private static boolean mPermissionRequested = false;
+
     @BindView(R.id.drawer_menu)
     ImageView drawerMenu;
     @BindView(R.id.map_toolbar)
@@ -88,6 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // Material Drawer
     Drawer drawer;
     AccountHeader headerResult;
+    // My Location
     Location mCurrentLocation;
     boolean mSettingsAvailable = false;
     private int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -168,7 +173,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        mPlayServicesConnected = true;
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -230,7 +234,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             Manifest.permission.ACCESS_FINE_LOCATION, getString(R.string.permission_rationale_location), true);
                 }
             } else {
-                mPermissionGranted = true;
                 checkLocationSettings();
             }
         }
@@ -282,7 +285,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (PermissionUtils.isPermissionGranted(permissions, grantResults,
                 Manifest.permission.ACCESS_FINE_LOCATION) && googleApiClient.isConnected()) {
             // Enable the my location layer if the permission has been granted.
-            mPermissionGranted = true;
             checkLocationSettings();
         } else {
             // Display the missing permission error dialog when the fragments resume.
@@ -298,7 +300,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 switch (resultCode) {
                     case FragmentActivity.RESULT_OK:
                         Log.i(TAG, "User agreed to make required location settings changes.");
-                        mSettingsAvailable = true;
                         if (!mExecutedOnce) {
                             enableMyLocation();
                         }
@@ -306,7 +307,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         break;
                     case FragmentActivity.RESULT_CANCELED:
                         Log.i(TAG, "User chose not to make required location settings changes.");
-                        mSettingsAvailable = false;
                         break;
                 }
                 break;
@@ -358,7 +358,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.i(TAG, "All location settings are satisfied.");
 
                         //noinspection MissingPermission
-                        mSettingsAvailable = true;
                         if (!mExecutedOnce) {
                             enableMyLocation();
                         }
@@ -387,7 +386,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         "fixed here. Fix in Settings.";
                                 Log.e(TAG, errorMessage);
                                 Toast.makeText(MapsActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-                                mSettingsAvailable = false;
                         }
                     }
                 });
