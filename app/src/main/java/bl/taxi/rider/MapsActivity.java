@@ -2,6 +2,7 @@ package bl.taxi.rider;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -21,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -173,7 +175,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         if (mResolvingError) {
             // Already attempting to resolve an error.
-            LogUtils.debug("play services resolving", null);
+            Log.d("PlayServiceresolving", connectionResult.getErrorMessage());
         } else if (connectionResult.hasResolution()) {
             try {
                 mResolvingError = true;
@@ -184,8 +186,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         } else {
             // Show dialog using GooglePlayServicesUtil.getErrorDialog()
-            //GooglePlayServicesUtil.getErrorDialog()(connectionResult.getErrorCode());
-            Toast.makeText(MapsActivity.this, R.string.google_api_connection_fail, Toast.LENGTH_LONG).show();
+            GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(),
+                    MapsActivity.this, REQUEST_RESOLVE_ERROR);
+            //Toast.makeText(MapsActivity.this, R.string.google_api_connection_fail, Toast.LENGTH_LONG).show();
             mResolvingError = true;
         }
     }
@@ -202,6 +205,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        checkRequestPermission();
+    }
+
+    private void checkRequestPermission () {
+
+        if (InternetUtils.isOnline(getApplicationContext())) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Permission to access the location is missing.
+                if (!mPermissionRequested) {
+                    mPermissionRequested = true;
+                    PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+                            Manifest.permission.ACCESS_FINE_LOCATION, getString(R.string.permission_rationale_location), true);
+                }
+            } else {
+                mPermissionGranted = true;
+                checkLocationSettings();
+            }
+        }
     }
 
     /**
@@ -232,15 +255,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
 
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
-
-        } else {
-
-            // Permission to access the location is missing.
-            if (!mPermissionRequested) {
-                mPermissionRequested = true;
-                PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-                        Manifest.permission.ACCESS_FINE_LOCATION, getString(R.string.permission_rationale_location), true);
-            }
         }
     }
 
@@ -289,6 +303,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 break;
             case REQUEST_RESOLVE_ERROR:
                 switch (resultCode) {
+                    case RESULT_OK:
+                        googleApiClient.connect();
                 }
         }
     }
@@ -307,21 +323,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (!InternetUtils.isOnline(getApplicationContext())) {
 
-        }
-
-        if (InternetUtils.isOnline(getApplicationContext())) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                // Permission to access the location is missing.
-                if (!mPermissionRequested) {
-                    mPermissionRequested = true;
-                    PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-                            Manifest.permission.ACCESS_FINE_LOCATION, getString(R.string.permission_rationale_location), true);
-                }
-            } else {
-                mPermissionGranted = true;
-                checkLocationSettings();
-            }
         }
     }
 
@@ -388,10 +389,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onDestroy();
 
         //Disconnect Googleclient Location API and remove Listeners for this Activity
-        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        if (googleApiClient != null) {
+            googleApiClient.unregisterConnectionCallbacks(this);
+            googleApiClient.unregisterConnectionFailedListener(this);
+        }
 
-        if (googleApiClient != null && googleApiClient.isConnected())
+        if (googleApiClient != null && googleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
             googleApiClient.disconnect();
+        }
     }
 
     @Override
