@@ -64,7 +64,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    // Constant request codes for onactivity result
+    // Constant request codes for onActivity result
     private static final int GOOGLE_DEFAULT_ZOOM = 15;
     /**
      * Constant used in the location settings dialog.
@@ -73,8 +73,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // Play services request code
     private static final int REQUEST_RESOLVE_ERROR = 33;
 
-    static boolean mPermissionGranted = false;
-    static boolean mPlayServicesConnected = false;
 
     /**
      * Flag indicating whether a permission is already requested or not
@@ -94,7 +92,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     AccountHeader headerResult;
     // My Location
     Location mCurrentLocation;
-    boolean mSettingsAvailable = false;
     private int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
