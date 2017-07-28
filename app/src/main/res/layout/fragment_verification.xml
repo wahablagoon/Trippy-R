@@ -11,7 +11,8 @@
         android:id="@+id/header_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -25,7 +26,8 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:padding="10dp"
-                android:src="@drawable/ic_arrow_back_black_24dp" />
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:contentDescription="@string/contentdescription" />
 
             <TextView
                 android:id="@+id/textView"
@@ -49,23 +51,21 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/toolbar"
             android:layout_alignLeft="@id/toolbar"
+            android:layout_alignStart="@id/toolbar"
             android:layout_alignRight="@id/toolbar"
+            android:layout_alignEnd="@id/toolbar"
             android:layout_marginBottom="-7dp"
             android:indeterminate="true"
             android:indeterminateTint="@color/colorPrimary"
-            android:visibility="gone" />
-
-        <FrameLayout
-            android:id="@+id/fl_fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:foreground="@drawable/bottom_shadow">
+            android:visibility="gone"
+            tools:targetApi="lollipop" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/toolbar"
                 android:background="@android:color/white"
+                android:foreground="@drawable/bottom_shadow"
                 android:focusable="true"
                 android:focusableInTouchMode="true">
 
@@ -114,11 +114,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@id/mobile_number"
+                    android:layout_alignEnd="@id/mobile_number"
                     android:layout_alignTop="@id/mobile_number"
                     android:layout_marginTop="10dp"
                     android:background="@android:color/transparent"
                     android:src="@drawable/ic_close_black_24dp"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:contentDescription="@string/contentdescription"
+                    />
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/country_code"
@@ -145,6 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:background="@android:color/transparent"
                     android:enabled="false"
                     android:text="@string/next"
@@ -158,8 +162,6 @@
                     android:background="@android:color/darker_gray" />
 
             </RelativeLayout>
-
-        </FrameLayout>
 
     </RelativeLayout>
 

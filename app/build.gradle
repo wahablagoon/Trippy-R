@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-def AndroidSupportVersion = '25.4.0'
-def playServicesVersion = '11.0.2'
+def AndroidSupportVersion = '26.0.0'
+def playServicesVersion = '11.0.4'
 
 repositories {
     jcenter()
@@ -11,12 +11,12 @@ repositories {
 }
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
         applicationId "bl.taxi.rider"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -50,9 +50,8 @@ dependencies {
     compile "com.google.android.gms:play-services-identity:$playServicesVersion"
     compile "com.google.android.gms:play-services-places:$playServicesVersion"
     compile "com.google.android.gms:play-services-base:$playServicesVersion"
-    //Multidex
+    //MultiDex
     compile 'com.android.support:multidex:1.0.2'
-    androidTestCompile 'com.android.support:multidex:1.0.2'
     //Retrofit2
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -73,5 +72,12 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.9.4@aar') {
         transitive = true
     }
+    //Animations
+    compile 'com.github.florent37:expectanim:1.0.7'
+
     testCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support:multidex:1.0.2'
+
+
+
 }

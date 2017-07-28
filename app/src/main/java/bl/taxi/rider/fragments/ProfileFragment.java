@@ -7,9 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
-
-import com.rengwuxian.materialedittext.MaterialEditText;
 
 import bl.taxi.rider.R;
 import butterknife.BindView;
@@ -22,19 +21,19 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.mobile_edit_icon)
     ImageButton mobileEditIcon;
     @BindView(R.id.input_mobile)
-    MaterialEditText textInputMobile;
+    EditText textInputMobile;
     @BindView(R.id.name_edit_icon)
     ImageButton nameEditIcon;
     @BindView(R.id.text_input_name)
-    MaterialEditText textInputName;
+    EditText textInputName;
     @BindView(R.id.email_edit_icon)
     ImageButton emailEditIcon;
     @BindView(R.id.text_input_email)
-    MaterialEditText textInputEmail;
+    EditText textInputEmail;
     @BindView(R.id.password_edit_icon)
     ImageButton passwordEditIcon;
     @BindView(R.id.text_input_password)
-    MaterialEditText textInputPassword;
+    EditText textInputPassword;
     @BindView(R.id.button_log_out)
     Button logOut;
     Unbinder unbinder;
@@ -79,7 +78,12 @@ public class ProfileFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.mobile_edit_icon, R.id.name_edit_icon, R.id.password_edit_icon, R.id.button_log_out})
+    @OnClick({
+            R.id.mobile_edit_icon,
+            R.id.name_edit_icon,
+            R.id.password_edit_icon,
+            R.id.button_log_out
+    })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mobile_edit_icon:

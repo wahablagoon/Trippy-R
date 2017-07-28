@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,10 +25,11 @@
             fontPath="fonts/Quicksand-Bold.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center"
-            android:paddingLeft="20dp"
-            android:text="Profiles &amp; Settings"
+            android:layout_gravity="start|center"
+            android:text="@string/profiles_amp_settings"
             android:textColor="@android:color/black"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:textSize="18sp"
             tools:ignore="MissingPrefix" />
 
@@ -37,9 +37,10 @@
             android:id="@+id/save_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center"
+            android:layout_gravity="end|center"
             android:layout_marginRight="10dp"
-            android:text="Save"
+            android:layout_marginEnd="10dp"
+            android:text="@string/save"
             android:textColor="@color/otp_text"
             android:textSize="16sp" />
 
@@ -58,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp">
 
             <ImageButton
@@ -65,6 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_phone"
                 tools:ignore="ContentDescription" />
@@ -74,7 +77,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_toRightOf="@id/mobile_image"
+                android:layout_toEndOf="@id/mobile_image"
                 android:text="@string/mobile_number_text"
                 android:textColor="@color/otp_text" />
 
@@ -83,13 +88,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_pencil"
                 tools:ignore="ContentDescription" />
 
-            <com.rengwuxian.materialedittext.MaterialEditText
+            <EditText
                 android:id="@+id/input_mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,20 +104,23 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@id/mobile_edit_icon"
+                android:layout_toStartOf="@id/mobile_edit_icon"
                 android:layout_toRightOf="@id/mobile_image"
+                android:layout_toEndOf="@id/mobile_image"
                 android:hint="@string/_10_digit_mobile_number"
+                android:background="@android:color/transparent"
                 android:inputType="number"
                 android:maxLength="10"
                 android:textSize="16sp"
-                app:met_baseColor="@android:color/black"
-                app:met_clearButton="true"
-                app:met_floatingLabel="none"
-                app:met_primaryColor="@color/colorPrimary" />
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/otp_text"
+                />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignLeft="@id/input_mobile"
+                android:layout_alignStart="@id/input_mobile"
                 android:layout_below="@id/input_mobile"
                 android:layout_marginTop="5dp"
                 android:background="@color/view_grey" />
@@ -123,6 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/mobile_layout"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp">
 
             <ImageButton
@@ -130,6 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_account"
                 tools:ignore="ContentDescription" />
@@ -139,7 +151,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_toRightOf="@id/profile_icon"
+                android:layout_toEndOf="@id/profile_icon"
                 android:text="@string/name_text"
                 android:textColor="@color/otp_text" />
 
@@ -148,34 +162,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_pencil"
                 tools:ignore="ContentDescription" />
 
-            <com.rengwuxian.materialedittext.MaterialEditText
+            <EditText
                 android:id="@+id/text_input_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_name"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
                 android:layout_toLeftOf="@id/name_edit_icon"
+                android:layout_toStartOf="@id/name_edit_icon"
                 android:layout_toRightOf="@id/profile_icon"
+                android:layout_toEndOf="@id/profile_icon"
                 android:hint="@string/profile_name_hint"
                 android:inputType="number"
                 android:maxLength="10"
                 android:textSize="16sp"
-                app:met_baseColor="@android:color/black"
-                app:met_clearButton="true"
-                app:met_floatingLabel="none"
-                app:met_primaryColor="@color/colorPrimary" />
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/otp_text"
+                />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignLeft="@id/text_input_name"
+                android:layout_alignStart="@id/text_input_name"
                 android:layout_below="@id/text_input_name"
                 android:layout_marginTop="5dp"
                 android:background="@color/view_grey" />
@@ -188,6 +207,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/name_layout"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp">
 
             <ImageButton
@@ -195,6 +215,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_email"
                 tools:ignore="ContentDescription" />
@@ -204,7 +225,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_toRightOf="@id/email_icon"
+                android:layout_toEndOf="@id/email_icon"
                 android:text="@string/email_text"
                 android:textColor="@color/otp_text" />
 
@@ -213,13 +236,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_pencil"
                 tools:ignore="ContentDescription" />
 
-            <com.rengwuxian.materialedittext.MaterialEditText
+            <EditText
                 android:id="@+id/text_input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -227,20 +252,22 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@id/email_edit_icon"
+                android:layout_toStartOf="@id/email_edit_icon"
                 android:layout_toRightOf="@id/email_icon"
+                android:layout_toEndOf="@id/email_icon"
                 android:hint="@string/email_address_hint"
-                android:inputType="number"
+                android:background="@android:color/transparent"
+                android:inputType="textEmailAddress"
                 android:maxLength="10"
                 android:textSize="16sp"
-                app:met_baseColor="@android:color/black"
-                app:met_clearButton="true"
-                app:met_floatingLabel="none"
-                app:met_primaryColor="@color/colorPrimary" />
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/otp_text"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignLeft="@id/text_input_email"
+                android:layout_alignStart="@id/text_input_email"
                 android:layout_below="@id/text_input_email"
                 android:layout_marginTop="5dp"
                 android:background="@color/view_grey" />
@@ -253,6 +280,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/email_layout"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp">
 
             <ImageButton
@@ -260,6 +288,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_password"
                 tools:ignore="ContentDescription" />
@@ -269,7 +298,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_toRightOf="@id/password_icon"
+                android:layout_toEndOf="@id/password_icon"
                 android:text="@string/password_text"
                 android:textColor="@color/otp_text" />
 
@@ -278,29 +309,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_pencil"
                 tools:ignore="ContentDescription" />
 
-            <com.rengwuxian.materialedittext.MaterialEditText
+            <EditText
                 android:id="@+id/text_input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_password"
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_toLeftOf="@id/password_edit_icon"
+                android:layout_toStartOf="@id/password_edit_icon"
                 android:layout_toRightOf="@id/password_icon"
+                android:layout_toEndOf="@id/password_icon"
                 android:hint="@string/password_hint"
-                android:inputType="number"
+                android:background="@android:color/transparent"
+                android:inputType="numberPassword"
                 android:maxLength="10"
                 android:textSize="16sp"
-                app:met_baseColor="@android:color/black"
-                app:met_clearButton="true"
-                app:met_floatingLabel="none"
-                app:met_primaryColor="@color/colorPrimary" />
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/otp_text"/>
 
         </RelativeLayout>
 

@@ -7,8 +7,11 @@ import android.view.View;
 
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.app.NavigationPolicy;
+import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
+import com.heinrichreimersoftware.materialintro.slide.Slide;
 
+import bl.taxi.rider.fragments.IntroFragment;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SplashIntroActivity extends IntroActivity {
@@ -24,6 +27,14 @@ public class SplashIntroActivity extends IntroActivity {
         setButtonCtaTintMode(BUTTON_CTA_TINT_MODE_BACKGROUND);
         autoplay(4000,INFINITE);
 
+
+        final Slide introSlide;
+        introSlide= new FragmentSlide.Builder()
+                .background(R.color.color_canteen)
+                .backgroundDark(R.color.colorPrimary)
+                .fragment(IntroFragment.newInstance())
+                .build();
+        addSlide(introSlide);
 
         addSlide(new SimpleSlide.Builder()
                 .description("Check cab availability and book at your convenience.")
@@ -74,7 +85,7 @@ public class SplashIntroActivity extends IntroActivity {
         setNavigationPolicy(new NavigationPolicy() {
             @Override
             public boolean canGoForward(int position) {
-                return position != 2;
+                return position != 3;
 
             }
 

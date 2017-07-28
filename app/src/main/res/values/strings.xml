@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">rider</string>
+    <string name="app_name">Rider</string>
     <string name="app_name_caps">TRIPPY</string>
+    <string name="app_name_description">The most efficient Taxi services</string>
     <string name="title_activity_maps">Map</string>
 
     <plurals name="numberOfSecondsRemaining">
@@ -64,4 +65,7 @@
     <string name="password_hint">Password</string>
     <string name="email_address_hint">Email address</string>
     <string name="log_out">LOGOUT</string>
+    <string name="profiles_amp_settings"><![CDATA[Profiles & Settings]]></string>
+    <string name="save">Save</string>
+    <string name="contentdescription">contentdescription</string>
 </resources>
