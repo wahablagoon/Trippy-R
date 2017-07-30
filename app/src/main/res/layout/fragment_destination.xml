@@ -1,12 +1,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="bl.taxi.rider.fragments.DestinationFragment">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/dest_toolbar"
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/input_destination"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
+        android:drawableLeft="@drawable/ic_search_grey_24dp"
+        android:drawableStart="@drawable/ic_search_grey_24dp"
+        android:drawablePadding="10dp"
+        android:hint="@string/enter_4_digit_otp"
+        android:inputType="number"
+        android:maxLength="4"
+        android:maxLines="1"
+        android:textSize="18sp"
+        app:met_baseColor="@android:color/black"
+        app:met_clearButton="true"
+        app:met_floatingLabel="none"
+        app:met_primaryColor="@color/colorPrimary" />
 
 </RelativeLayout>
