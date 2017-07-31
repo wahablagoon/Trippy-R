@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,8 +12,7 @@
         android:layout_marginBottom="10dp"
         android:orientation="vertical"
         android:layout_marginLeft="10dp"
-        android:layout_centerVertical="true"
-        >
+        android:layout_centerVertical="true">
 
         <TextView
             android:id="@+id/place_name"
@@ -42,15 +40,10 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/otp_text"
-            android:layout_below="@+id/txtlay"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:id="@+id/viewline"
-            >
-
-        </View>
+            android:id="@+id/viewline"/>
 
     </LinearLayout>
-
 
 </RelativeLayout>

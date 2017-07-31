@@ -42,7 +42,7 @@ public class MyApplication extends Application {
 
     private synchronized static void setInstance () {
         instance = new Retrofit.Builder()
-                .baseUrl(Constants.Base_url)
+                .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -63,7 +63,6 @@ public class MyApplication extends Application {
                 .build();
 
         cache_instance = new Retrofit.Builder()
-                .baseUrl(Constants.Base_url)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

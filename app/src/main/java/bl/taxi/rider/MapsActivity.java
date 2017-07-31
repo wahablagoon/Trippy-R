@@ -435,8 +435,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }*/
 
-        Fragment newFragment = DestinationFragment.newInstance();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        android.support.v4.app.Fragment newFragment = DestinationFragment.newInstance();
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(((ViewGroup)findViewById(R.id.map_container).getParent()).getId(), newFragment);
         transaction.addToBackStack(null);
         transaction.commit();

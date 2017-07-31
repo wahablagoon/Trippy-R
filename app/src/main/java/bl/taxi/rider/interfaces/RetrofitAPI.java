@@ -4,6 +4,8 @@ package bl.taxi.rider.interfaces;
 import java.util.List;
 
 import bl.taxi.rider.models.Model;
+import bl.taxi.rider.models.placeautocomplete.PlacesAutoComplete;
+import bl.taxi.rider.utils.Constants;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
@@ -23,4 +25,8 @@ public interface RetrofitAPI {
     @GET("api/sentOTP/1/{cc}/{mobile_no}")
     Call<List<Model>> sendOTP(
             @Path("cc") String cc, @Path("mobile_no") String mobile_no);
+
+    @GET(Constants.AUTO_COMPLETE_URL)
+    Call<PlacesAutoComplete> getPlaces(
+            @Path("input") String query, @Path("key") String google_api_key);
 }
