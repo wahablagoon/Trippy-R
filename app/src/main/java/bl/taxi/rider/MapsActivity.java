@@ -39,7 +39,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -53,6 +52,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import bl.taxi.rider.fragments.DestinationFragment;
 import bl.taxi.rider.fragments.ProfileFragment;
 import bl.taxi.rider.utils.InternetUtils;
 import bl.taxi.rider.utils.PermissionUtils;
@@ -422,7 +422,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @OnClick(R.id.myLocationButton)
     public void onMyLocation(View view) {
 
-        if (mCurrentLocation != null && mMap != null) {
+     /*   if (mCurrentLocation != null && mMap != null) {
 
             LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
 
@@ -433,7 +433,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        }
+        }*/
+
+        Fragment newFragment = DestinationFragment.newInstance();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(((ViewGroup)findViewById(R.id.map_container).getParent()).getId(), newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
