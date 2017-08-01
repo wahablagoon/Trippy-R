@@ -78,11 +78,7 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
         MyApplication.setCacheInstance(Constants.AUTO_COMPLETE_URL);
         retrofitAPI = MyApplication.getCacheService();
         unbinder = ButterKnife.bind(this, view);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
-                LinearLayoutManager.VERTICAL, false);
-        placesListView.setLayoutManager(linearLayoutManager);
-        placesAdapter = new PlacesAdapter(getContext(), placesList);
-        placesListView.setAdapter(placesAdapter);
+
         return view;
     }
 
@@ -90,6 +86,11 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.VERTICAL, false);
+        placesListView.setLayoutManager(linearLayoutManager);
+        placesAdapter = new PlacesAdapter(getContext(), placesList);
+        placesListView.setAdapter(placesAdapter);
         inputSearchPlaces.addTextChangedListener(this);
     }
 
@@ -142,5 +143,7 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
     @OnClick(R.id.input_places_clear)
     public void onViewClicked() {
         inputSearchPlaces.setText("");
+        placesList.clear();
+        placesAdapter.notifyDataSetChanged();
     }
 }

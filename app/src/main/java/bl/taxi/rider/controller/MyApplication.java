@@ -23,15 +23,22 @@ public class MyApplication extends Application {
     private static Retrofit instance;
     private static RetrofitAPI service;
     private static RetrofitAPI cache_service;
-    private static Cache cache;
+    private static OkHttpClient okHttpClient;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
         MultiDex.install(this);
         setInstance();
+
         int cacheSize = 10 * 1024 * 1024; // 10 MB
-        cache = new Cache(getCacheDir(), cacheSize);
+        Cache cache = new Cache(getCacheDir(), cacheSize);
+
+        okHttpClient = new OkHttpClient.Builder()
+                .cache(cache)
+                .build();
+
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath(getString(R.string.font_regular))
                 .setFontAttrId(R.attr.fontPath)
@@ -56,10 +63,6 @@ public class MyApplication extends Application {
     }
 
     public synchronized static void setCacheInstance (String baseUrl) {
-
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .cache(cache)
-                .build();
 
         Retrofit cache_instance = new Retrofit.Builder()
                 .client(okHttpClient)
