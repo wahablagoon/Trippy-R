@@ -38,7 +38,7 @@ public class SampleActivity extends AppCompatActivity {
         Call<List<Model>> query = service.getData("msg2thirumalai@gmail.com","thirumalai");
         query.enqueue(new Callback<List<Model>>() {
             @Override
-            public void onResponse(Call<List<Model>> call, Response<List<Model>> response) {
+            public void onResponse(@NonNull Call<List<Model>> call, @NonNull Response<List<Model>> response) {
                 System.out.print("response" + response);
                 List<Model> result = response.body();
                 if (result.size()!= 0) {

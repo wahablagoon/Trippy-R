@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /*
- * Created by Kyra on 1/11/2016.
+ * Created by Trippy on 1/11/2016.
  */
 
 public class PlacesAutoComplete {
@@ -18,19 +18,16 @@ public class PlacesAutoComplete {
     @Expose
     private String status;
 
-    public List<Prediction> getPredictions() {
-        return predictions;
+    public PlacesAutoComplete(String status) {
+        this.status = status;
     }
 
-    public void setPredictions(List<Prediction> predictions) {
-        this.predictions = predictions;
+    public List<Prediction> getPredictions() {
+        return predictions;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

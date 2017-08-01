@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import bl.taxi.rider.R;
 import bl.taxi.rider.adapters.PlacesAdapter;
@@ -50,7 +49,7 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
 
     private RetrofitAPI retrofitAPI;
     private PlacesAdapter placesAdapter;
-    private List<Prediction> placesList = new ArrayList<>();
+    private ArrayList<Prediction> placesList = new ArrayList<>();
 
     public DestinationFragment() {
         // Required empty public constructor
@@ -76,18 +75,21 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_destination, container, false);
+        MyApplication.setCacheInstance(Constants.AUTO_COMPLETE_URL);
         retrofitAPI = MyApplication.getCacheService();
-        placesAdapter = new PlacesAdapter(getContext(), placesList, this);
         unbinder = ButterKnife.bind(this, view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.VERTICAL, false);
+        placesListView.setLayoutManager(linearLayoutManager);
+        placesAdapter = new PlacesAdapter(getContext(), placesList);
+        placesListView.setAdapter(placesAdapter);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
-                LinearLayoutManager.VERTICAL, false);
-        placesListView.setLayoutManager(linearLayoutManager);
+
         inputSearchPlaces.addTextChangedListener(this);
     }
 
@@ -119,11 +121,15 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
 
     @Override
     public void onResponse(@NonNull Call<PlacesAutoComplete> call, @NonNull Response<PlacesAutoComplete> response) {
+        System.out.println("response"+response);
         PlacesAutoComplete placesAutoComplete = response.body();
-        if (placesAutoComplete != null && placesAutoComplete.getStatus().equals("OK")) {
+        if (placesAutoComplete == null) {
+            return;
+        }
+        if (placesAutoComplete.getStatus().equals("OK")) {
             placesAdapter.setPlacesAutoComplete(placesAutoComplete);
-            placesList = placesAutoComplete.getPredictions();
-            placesListView.setAdapter(placesAdapter);
+            placesList.clear();
+            placesList.addAll(placesAutoComplete.getPredictions());
             placesAdapter.notifyDataSetChanged();
         }
     }

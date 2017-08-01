@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
@@ -7,21 +8,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtlay"
+        android:id="@+id/view_layout"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:orientation="vertical"
         android:layout_marginLeft="10dp"
-        android:layout_centerVertical="true">
+        android:layout_marginStart="10dp"
+        android:layout_centerVertical="true"
+        tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/place_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:maxLines="1"
-            android:text="Location"
-            android:textColor="@color/colorPrimary"
+            android:text="@string/location"
+            android:textColor="@android:color/black"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold" />
 
@@ -30,19 +34,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:maxLines="1"
-            android:text="Location Detail"
-            android:textColor="#999999"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:text="@string/location_detail"
+            android:textColor="#6F6F6F"
+            android:textSize="12sp"
+             />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/otp_text"
+            android:background="#E5E5E5"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
-            android:id="@+id/viewline"/>
+            android:id="@+id/view_line"/>
 
     </LinearLayout>
 

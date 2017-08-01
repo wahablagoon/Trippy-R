@@ -21,7 +21,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MyApplication extends Application {
 
     private static Retrofit instance;
-    private static Retrofit cache_instance;
     private static RetrofitAPI service;
     private static RetrofitAPI cache_service;
     private static Cache cache;
@@ -56,14 +55,15 @@ public class MyApplication extends Application {
         return service;
     }
 
-    private synchronized static void setCacheInstance () {
+    public synchronized static void setCacheInstance (String baseUrl) {
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cache(cache)
                 .build();
 
-        cache_instance = new Retrofit.Builder()
+        Retrofit cache_instance = new Retrofit.Builder()
                 .client(okHttpClient)
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -71,9 +71,7 @@ public class MyApplication extends Application {
     }
 
     public static RetrofitAPI getCacheService () {
-        if (cache_instance == null) {
-            setCacheInstance();
-        }
+
         return cache_service;
     }
 

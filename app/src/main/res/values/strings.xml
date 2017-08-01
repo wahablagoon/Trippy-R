@@ -69,4 +69,7 @@
     <string name="save">Save</string>
     <string name="contentdescription">contentdescription</string>
     <string name="input_location_hint">Search for a locality or landmark..</string>
+    <string name="location">Location</string>
+    <string name="location_detail">Location Detail</string>
+    <string name="enter_pickup_location">Enter pickup location</string>
 </resources>

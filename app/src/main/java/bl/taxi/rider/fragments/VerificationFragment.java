@@ -157,8 +157,8 @@ public class VerificationFragment extends Fragment {
         String inputNumber = mobileNumber.getText().toString();
         if (inputNumber.length() <= 1) {
             return false;
-        } else {
-            if (validatePhone()) {
+        }
+        if (validatePhone()) {
                 PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
                 String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(91);
                 Phonenumber.PhoneNumber phoneNumber = null;
@@ -173,7 +173,6 @@ public class VerificationFragment extends Fragment {
             }
             setEnabled(true, R.color.colorPrimary);
             return true;
-        }
     }
 
     private boolean validatePhone() {

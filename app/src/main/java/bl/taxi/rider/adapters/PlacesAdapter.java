@@ -9,11 +9,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import bl.taxi.rider.R;
-import bl.taxi.rider.fragments.DestinationFragment;
 import bl.taxi.rider.models.placeautocomplete.PlacesAutoComplete;
 import bl.taxi.rider.models.placeautocomplete.Prediction;
 
@@ -23,23 +22,17 @@ import bl.taxi.rider.models.placeautocomplete.Prediction;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder> {
 
-    DestinationFragment destinationFragment;
     private Context mContext;
-    private List<Prediction> placesList;
+    private ArrayList<Prediction> placesList;
 
     private PlacesAutoComplete placesAutoComplete;
 
-    public PlacesAdapter(Context context, List<Prediction> placesList,
-                         DestinationFragment destinationFragment) {
+    public PlacesAdapter(Context context, ArrayList<Prediction> placesList) {
 
         this.mContext = context;
-        this.destinationFragment = destinationFragment;
         this.placesList = placesList;
     }
-
-    public PlacesAutoComplete getPlacesAutoComplete() {
-        return placesAutoComplete;
-    }
+    
 
     public void setPlacesAutoComplete(PlacesAutoComplete placesAutoComplete) {
         this.placesAutoComplete = placesAutoComplete;
@@ -54,6 +47,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(PlacesAdapter.ViewHolder holder, int position) {
+        System.out.println("Response in Adapter"+placesList.get(position).getDescription());
         if (placesAutoComplete.getStatus().equals("OK")) {
             StringTokenizer st = new StringTokenizer(placesList.get(position).getDescription(), ",");
 
@@ -67,7 +61,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
                 }
             }
             holder.location.setText(desc_detail);
-            holder.txtlay.setOnClickListener(new View.OnClickListener() {
+            holder.places_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -83,13 +77,13 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView name, location;
-        LinearLayout txtlay;
+        LinearLayout places_layout;
 
         ViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.place_name);
             location = itemView.findViewById(R.id.place_detail);
-            txtlay = itemView.findViewById(R.id.txtlay);
+            places_layout = itemView.findViewById(R.id.view_layout);
         }
     }
 }
