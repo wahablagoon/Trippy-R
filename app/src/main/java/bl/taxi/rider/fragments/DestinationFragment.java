@@ -50,6 +50,7 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
     private RetrofitAPI retrofitAPI;
     private PlacesAdapter placesAdapter;
     private ArrayList<Prediction> placesList = new ArrayList<>();
+    private String mCurrentLocation;
 
     public DestinationFragment() {
         // Required empty public constructor
@@ -78,6 +79,9 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
         MyApplication.setCacheInstance(Constants.AUTO_COMPLETE_URL);
         retrofitAPI = MyApplication.getCacheService();
         unbinder = ButterKnife.bind(this, view);
+        mCurrentLocation = getArguments().getString("strLocation");
+        if (mCurrentLocation == null)
+            mCurrentLocation = "";
 
         return view;
     }
@@ -89,7 +93,7 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         placesListView.setLayoutManager(linearLayoutManager);
-        placesAdapter = new PlacesAdapter(getContext(), placesList);
+        placesAdapter = new PlacesAdapter(getContext(), placesList, this, getActivity());
         placesListView.setAdapter(placesAdapter);
         inputSearchPlaces.addTextChangedListener(this);
     }
@@ -116,7 +120,8 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
     }
 
     private void getPlacesList(String query) {
-        Call<PlacesAutoComplete> autoCompleteCall = retrofitAPI.getPlaces(query, Constants.GOOGLE_API_KEY);
+        Call<PlacesAutoComplete> autoCompleteCall = retrofitAPI.getPlaces(query, mCurrentLocation,
+                Constants.GOOGLE_API_KEY, "5000");
         autoCompleteCall.enqueue(this);
     }
 

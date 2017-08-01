@@ -26,5 +26,6 @@ public interface RetrofitAPI {
 
     @GET("json")
     Call<PlacesAutoComplete> getPlaces(
-            @Query("input") String input, @Query("key") String key);
+            @Query("input") String input, @Query("location") String location,
+            @Query("key") String key, @Query("radius") String radius);
 }

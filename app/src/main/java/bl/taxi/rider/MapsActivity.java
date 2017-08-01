@@ -14,13 +14,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -39,6 +40,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -54,6 +56,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import bl.taxi.rider.fragments.DestinationFragment;
 import bl.taxi.rider.fragments.ProfileFragment;
+import bl.taxi.rider.models.placeautocomplete.Prediction;
 import bl.taxi.rider.utils.InternetUtils;
 import bl.taxi.rider.utils.PermissionUtils;
 import butterknife.BindView;
@@ -73,18 +76,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // Play services request code
     private static final int REQUEST_RESOLVE_ERROR = 33;
 
-
     /**
      * Flag indicating whether a permission is already requested or not
      */
     private static boolean mPermissionRequested = false;
-
+    @BindView(R.id.card_view_drop)
+    CardView cardViewDrop;
     @BindView(R.id.drawer_menu)
     ImageView drawerMenu;
     @BindView(R.id.map_toolbar)
     Toolbar mapToolbar;
     @BindView(R.id.map_fragment_container)
-    FrameLayout mapFragmentContainer;
+    RelativeLayout mapFragmentContainer;
     @BindView(R.id.myLocationButton)
     RelativeLayout myLocationButton;
     // Material Drawer
@@ -92,6 +95,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     AccountHeader headerResult;
     // My Location
     Location mCurrentLocation;
+    @BindView(R.id.pickup_text)
+    TextView pickupText;
+    @BindView(R.id.card_view_pickup)
+    CardView cardViewPickup;
+    @BindView(R.id.drop_text)
+    public TextView dropText;
     private int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
@@ -99,6 +108,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String TAG = this.getClass().getSimpleName();
     private SettingsClient mSettingsClient;
     private boolean mExecutedOnce = false;
+    public Prediction selectedLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,13 +130,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .withOnAccountHeaderSelectionViewClickListener(new AccountHeader.OnAccountHeaderSelectionViewClickListener() {
                     @Override
                     public boolean onClick(View view, IProfile profile) {
-                        if(drawer.isDrawerOpen())
+                        if (drawer.isDrawerOpen())
                             drawer.closeDrawer();
                         Fragment newFragment = ProfileFragment.newInstance();
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(((ViewGroup)findViewById(R.id.map_container).getParent()).getId(), newFragment);
+                        //transaction.replace(((ViewGroup)findViewById(R.id.map_container).getParent()).getId(), newFragment);
+                        transaction.replace(((ViewGroup) findViewById(R.id.map_fragment_container).getParent()).getId(), newFragment);
                         transaction.addToBackStack(null);
                         transaction.commit();
+                        mapToolbar.setTitle(R.string.profiles_amp_settings);
                         return true;
                     }
                 })
@@ -413,16 +425,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    @OnClick(R.id.drawer_menu)
-    public void drawerMenu(View view) {
-        if (!drawer.isDrawerOpen())
-            drawer.openDrawer();
-    }
-
     @OnClick(R.id.myLocationButton)
     public void onMyLocation(View view) {
 
-     /*   if (mCurrentLocation != null && mMap != null) {
+        if (mCurrentLocation != null && mMap != null) {
 
             LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
 
@@ -432,18 +438,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .tilt(0)                                     // Sets the tilt of the camera to 0 degrees
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-        }*/
-
-        android.support.v4.app.Fragment newFragment = DestinationFragment.newInstance();
-        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(((ViewGroup)findViewById(R.id.map_container).getParent()).getId(), newFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        }
     }
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @OnClick({R.id.card_view_pickup, R.id.card_view_drop, R.id.drawer_menu})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+
+            case R.id.drawer_menu:
+                if (!drawer.isDrawerOpen())
+                    drawer.openDrawer();
+                break;
+
+            case R.id.card_view_pickup:
+                getDestinationFragment();
+                break;
+
+            case R.id.card_view_drop:
+                getDestinationFragment();
+                break;
+        }
+    }
+
+    private void getDestinationFragment() {
+        String location = null;
+        if (mCurrentLocation != null) {
+            location = String.valueOf(mCurrentLocation.getLatitude()) + "," +
+                    String.valueOf(mCurrentLocation.getLongitude());
+        }
+        android.support.v4.app.Fragment newFragment = DestinationFragment.newInstance();
+        Bundle locationParam = new Bundle();
+        if (location != null) {
+            locationParam.putString("strLocation", location);
+        } else
+            locationParam.putString("strLocation", "");
+        newFragment.setArguments(locationParam);
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(((ViewGroup) findViewById(R.id.map_container).getParent()).getId(), newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

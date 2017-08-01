@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/destination_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/otp_text" />
+            android:background="@color/color_otp_text" />
 
     </RelativeLayout>
 
@@ -51,10 +51,10 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="52dp"
-        android:background="@android:color/white"
-        android:elevation="55dp"
         android:orientation="horizontal"
+        card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="10dp"
         tools:targetApi="lollipop">
 
         <LinearLayout
@@ -80,8 +80,8 @@
                 android:background="@android:color/transparent"
                 android:gravity="start|center"
                 android:hint="@string/input_location_hint"
-                android:textColor="@color/otp_text"
-                android:textColorHint="@color/otp_text"
+                android:textColor="@color/color_otp_text"
+                android:textColorHint="@color/color_otp_text"
                 android:textSize="15sp" />
 
             <ImageButton
@@ -106,10 +106,10 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:elevation="55dp"
-        android:background="@android:color/white"
         android:orientation="horizontal"
+        card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="10dp"
         tools:targetApi="lollipop">
 
         <android.support.v7.widget.RecyclerView
@@ -121,14 +121,14 @@
             android:scrollbars="none" />
 
     </android.support.v7.widget.CardView>
-<!--
+    <!--
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_below="@id/card_view_bottom"
-        android:src="@drawable/powered_by_google_light" />
--->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_below="@id/card_view_bottom"
+            android:src="@drawable/powered_by_google_light" />
+    -->
 
 </RelativeLayout>

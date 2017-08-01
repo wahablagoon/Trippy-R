@@ -41,7 +41,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
             android:text="@string/save"
-            android:textColor="@color/otp_text"
+            android:textColor="@color/color_otp_text"
             android:textSize="16sp" />
 
     </android.support.v7.widget.Toolbar>
@@ -81,7 +81,7 @@
                 android:layout_toRightOf="@id/mobile_image"
                 android:layout_toEndOf="@id/mobile_image"
                 android:text="@string/mobile_number_text"
-                android:textColor="@color/otp_text" />
+                android:textColor="@color/color_otp_text" />
 
             <ImageButton
                 android:id="@+id/mobile_edit_icon"
@@ -113,7 +113,7 @@
                 android:maxLength="10"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:textColorHint="@color/otp_text"
+                android:textColorHint="@color/color_otp_text"
                 />
 
             <View
@@ -123,7 +123,7 @@
                 android:layout_alignStart="@id/input_mobile"
                 android:layout_below="@id/input_mobile"
                 android:layout_marginTop="5dp"
-                android:background="@color/view_grey" />
+                android:background="@color/color_view_grey" />
 
         </RelativeLayout>
 
@@ -155,7 +155,7 @@
                 android:layout_toRightOf="@id/profile_icon"
                 android:layout_toEndOf="@id/profile_icon"
                 android:text="@string/name_text"
-                android:textColor="@color/otp_text" />
+                android:textColor="@color/color_otp_text" />
 
             <ImageButton
                 android:id="@+id/name_edit_icon"
@@ -187,7 +187,7 @@
                 android:maxLength="10"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:textColorHint="@color/otp_text"
+                android:textColorHint="@color/color_otp_text"
                 />
 
             <View
@@ -197,7 +197,7 @@
                 android:layout_alignStart="@id/text_input_name"
                 android:layout_below="@id/text_input_name"
                 android:layout_marginTop="5dp"
-                android:background="@color/view_grey" />
+                android:background="@color/color_view_grey" />
 
         </RelativeLayout>
 
@@ -229,7 +229,7 @@
                 android:layout_toRightOf="@id/email_icon"
                 android:layout_toEndOf="@id/email_icon"
                 android:text="@string/email_text"
-                android:textColor="@color/otp_text" />
+                android:textColor="@color/color_otp_text" />
 
             <ImageButton
                 android:id="@+id/email_edit_icon"
@@ -261,7 +261,7 @@
                 android:maxLength="10"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:textColorHint="@color/otp_text"/>
+                android:textColorHint="@color/color_otp_text"/>
 
             <View
                 android:layout_width="match_parent"
@@ -270,7 +270,7 @@
                 android:layout_alignStart="@id/text_input_email"
                 android:layout_below="@id/text_input_email"
                 android:layout_marginTop="5dp"
-                android:background="@color/view_grey" />
+                android:background="@color/color_view_grey" />
 
         </RelativeLayout>
 
@@ -302,7 +302,7 @@
                 android:layout_toRightOf="@id/password_icon"
                 android:layout_toEndOf="@id/password_icon"
                 android:text="@string/password_text"
-                android:textColor="@color/otp_text" />
+                android:textColor="@color/color_otp_text" />
 
             <ImageButton
                 android:id="@+id/password_edit_icon"
@@ -336,7 +336,7 @@
                 android:maxLength="10"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:textColorHint="@color/otp_text"/>
+                android:textColorHint="@color/color_otp_text"/>
 
         </RelativeLayout>
 
@@ -345,7 +345,7 @@
             android:layout_height="1dp"
             android:layout_alignBottom="@id/password_layout"
             android:layout_marginTop="5dp"
-            android:background="@color/otp_text"
+            android:background="@color/color_otp_text"
             tools:ignore="UnknownId" />
 
     </RelativeLayout>
