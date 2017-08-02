@@ -130,7 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Fragment newFragment = ProfileFragment.newInstance();
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
                         //transaction.replace(((ViewGroup)findViewById(R.id.map_container).getParent()).getId(), newFragment);
-                        transaction.replace(((ViewGroup) findViewById(R.id.map_fragment_container).getParent()).getId(), newFragment);
+                        transaction.replace(R.id.map_fragment_container, newFragment);
                         transaction.addToBackStack(null);
                         transaction.commit();
                         mapToolbar.setTitle(R.string.profiles_amp_settings);
