@@ -30,10 +30,10 @@ import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link OTPFragment#newInstance} factory method to
+ * Use the {@link SignUpFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OTPFragment extends Fragment {
+public class SignUpFragment extends Fragment {
 
     SmsVerifyCatcher smsVerifyCatcher;
 
@@ -50,7 +50,7 @@ public class OTPFragment extends Fragment {
     TextView otpCountDown;
     Unbinder unbinder;
 
-    public OTPFragment() {
+    public SignUpFragment() {
         // Required empty public constructor
     }
 
@@ -60,8 +60,8 @@ public class OTPFragment extends Fragment {
      *
      * @return A new instance of fragment OTPFragment.
      */
-    public static OTPFragment newInstance() {
-        return new OTPFragment();
+    public static SignUpFragment newInstance() {
+        return new SignUpFragment();
     }
 
     @Override

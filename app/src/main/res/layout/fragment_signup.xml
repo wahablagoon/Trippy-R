@@ -1,0 +1,153 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="bl.taxi.rider.fragments.OTPFragment">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/otp_toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@android:color/white">
+
+        <ImageButton
+            android:id="@+id/otp_button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:padding="10dp"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/textView"
+            fontPath="fonts/Quicksand-Bold.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/create_account"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:ignore="MissingPrefix" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/otp_toolbar_layout"
+        android:background="@android:color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:foreground="@drawable/bottom_shadow">
+
+        <TextView
+            android:id="@+id/verify_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/enter_details_to_create_account_with"
+            android:textColor="@color/color_otp_text"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/otp_mobile_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/verify_text"
+            android:text="@string/_10_digit_mobile_number"
+            android:textColor="@color/color_otp_text"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/input_full_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/verify_text"
+            android:layout_alignLeft="@id/verify_text"
+            android:layout_alignRight="@id/verify_text"
+            android:layout_alignStart="@id/verify_text"
+            android:layout_below="@id/verify_text"
+            android:layout_marginTop="25dp"
+            android:hint="@string/full_name"
+            android:inputType="number"
+            android:maxLength="4"
+            android:maxLines="1"
+            android:textSize="22sp"
+            app:met_baseColor="@android:color/black"
+            app:met_clearButton="true"
+            app:met_floatingLabel="highlight"
+            app:met_iconPadding="10dp"
+            app:met_primaryColor="@color/colorPrimary" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/input_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/input_full_name"
+            android:layout_alignLeft="@id/input_full_name"
+            android:layout_alignRight="@id/input_full_name"
+            android:layout_alignStart="@id/input_full_name"
+            android:layout_below="@id/input_full_name"
+            android:layout_marginTop="25dp"
+            android:hint="@string/email_optional"
+            android:inputType="number"
+            android:maxLength="4"
+            android:maxLines="1"
+            android:textSize="22sp"
+            app:met_baseColor="@android:color/black"
+            app:met_clearButton="true"
+            app:met_floatingLabel="highlight"
+            app:met_iconPadding="10dp"
+            app:met_primaryColor="@color/colorPrimary" />
+
+
+
+        <Button
+            android:id="@+id/button_log_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/transparent"
+            android:text="@string/register"
+            fontPath="fonts/Quicksand-Bold.ttf"
+            android:textColor="@android:color/darker_gray"
+            tools:ignore="MissingPrefix" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignTop="@id/button_log_in"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/otp_count_down"
+            fontPath="fonts/Quicksand-Bold.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/button_log_in"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="10dp"
+            android:text="@string/agree_terms"
+            android:textColor="@color/color_otp_text"
+            tools:ignore="MissingPrefix" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

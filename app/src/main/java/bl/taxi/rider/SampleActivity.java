@@ -39,7 +39,6 @@ public class SampleActivity extends AppCompatActivity {
         query.enqueue(new Callback<List<Model>>() {
             @Override
             public void onResponse(@NonNull Call<List<Model>> call, @NonNull Response<List<Model>> response) {
-                System.out.print("response" + response);
                 List<Model> result = response.body();
                 if (result.size()!= 0) {
                     for (int i = 0; i < result.size(); i++) {
@@ -50,7 +49,7 @@ public class SampleActivity extends AppCompatActivity {
                     }
 
                 } else
-                    System.out.print("hai result null");
+                    Log.e("Error", "retrofit");
             }
             @Override
             public void onFailure(Call<List<Model>> call, Throwable t) {

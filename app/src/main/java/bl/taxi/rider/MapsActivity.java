@@ -14,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -80,8 +79,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * Flag indicating whether a permission is already requested or not
      */
     private static boolean mPermissionRequested = false;
-    @BindView(R.id.card_view_drop)
-    CardView cardViewDrop;
     @BindView(R.id.drawer_menu)
     ImageView drawerMenu;
     @BindView(R.id.map_toolbar)
@@ -96,11 +93,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // My Location
     Location mCurrentLocation;
     @BindView(R.id.pickup_text)
-    TextView pickupText;
-    @BindView(R.id.card_view_pickup)
-    CardView cardViewPickup;
+    public TextView pickupText;
     @BindView(R.id.drop_text)
     public TextView dropText;
+
     private int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
@@ -446,7 +442,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    @OnClick({R.id.card_view_pickup, R.id.card_view_drop, R.id.drawer_menu})
+    @OnClick({R.id.pickup_text, R.id.drop_text, R.id.drawer_menu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -455,11 +451,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     drawer.openDrawer();
                 break;
 
-            case R.id.card_view_pickup:
+            case R.id.pickup_text:
                 getDestinationFragment();
                 break;
 
-            case R.id.card_view_drop:
+            case R.id.drop_text:
                 getDestinationFragment();
                 break;
         }
@@ -473,9 +469,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         android.support.v4.app.Fragment newFragment = DestinationFragment.newInstance();
         Bundle locationParam = new Bundle();
-        if (location != null) {
-            locationParam.putString("strLocation", location);
-        } else
+        if (location != null) locationParam.putString("strLocation", location);
+        else
             locationParam.putString("strLocation", "");
         newFragment.setArguments(locationParam);
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
