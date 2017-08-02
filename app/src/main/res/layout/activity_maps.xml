@@ -8,141 +8,146 @@
     tools:context="bl.taxi.rider.MapsActivity"
     tools:ignore="MissingPrefix">
 
-    <RelativeLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/map_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@android:color/white"
+        android:elevation="10dp"
+        tools:ignore="UnusedAttribute">
+
+        <ImageView
+            android:id="@+id/drawer_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:src="@drawable/ic_drawer_menu_black"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            fontPath="fonts/Quicksand-Bold.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/app_name_caps"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/save_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/save"
+            android:textColor="@color/color_otp_text"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/map_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+        android:layout_below="@id/map_toolbar"
+        android:layout_marginTop="?android:attr/actionBarSize">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/map_toolbar"
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:layout_alignParentTop="true"
-            android:background="@android:color/white"
-            android:elevation="10dp"
-            android:fitsSystemWindows="true"
-            tools:ignore="UnusedAttribute">
+            android:layout_height="match_parent" />
 
-            <TextView
-                android:id="@+id/toolbar_title"
-                fontPath="fonts/Quicksand-Bold.ttf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/app_name_caps"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
-
-            <ImageView
-                android:id="@+id/drawer_menu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_drawer_menu_black"
-                tools:ignore="ContentDescription" />
-
-        </android.support.v7.widget.Toolbar>
-
-        <FrameLayout
-            android:id="@+id/map_fragment_container"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/map_toolbar">
-
-            <fragment
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            tools:ignore="UselessParent">
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:ignore="UselessParent">
+                android:id="@+id/text_location_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="35dp"
+                android:background="@android:color/white"
+                android:elevation="10dp"
+                tools:ignore="UnusedAttribute">
 
-                <RelativeLayout
-                    android:id="@+id/text_location_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="35dp"
-                    android:background="@android:color/white"
-                    android:elevation="10dp"
-                    tools:ignore="UnusedAttribute">
+                <LinearLayout
+                    android:id="@+id/pickup_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/pickup_layout"
+                    <TextView
+                        android:id="@+id/pickup_text"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:orientation="vertical">
+                        android:layout_height="match_parent"
+                        android:gravity="start|center"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:text="@string/pickup_from"
+                        android:textColor="@android:color/black" />
 
-                        <TextView
-                            android:id="@+id/pickup_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="start|center"
-                            android:maxLines="1"
-                            android:padding="10dp"
-                            android:text="@string/pickup_from"
-                            android:textColor="@android:color/black" />
+                </LinearLayout>
 
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/view_line"
-                        android:layout_width="wrap_content"
-                        android:layout_height="1dp"
-                        android:layout_below="@+id/pickup_layout"
-                        android:background="@color/color_view_grey" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_below="@id/view_line"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/drop_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="start|center"
-                            android:maxLines="1"
-                            android:padding="10dp"
-                            android:text="@string/drop_to"
-                            android:textColor="@android:color/black" />
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/myLocationButton"
+                <View
+                    android:id="@+id/view_line"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="50dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/ic_shape_circle"
-                    android:elevation="10dp"
-                    tools:ignore="UnusedAttribute">
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/pickup_layout"
+                    android:background="@color/color_view_grey" />
 
-                    <ImageView
-                        android:id="@+id/myLocationImg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:contentDescription="@string/contentdescription"
-                        android:src="@drawable/ic_my_location_black_24dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@id/view_line"
+                    android:orientation="vertical">
 
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/drop_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="start|center"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:text="@string/drop_to"
+                        android:textColor="@android:color/black" />
+
+                </LinearLayout>
 
             </RelativeLayout>
 
-        </FrameLayout>
+            <RelativeLayout
+                android:id="@+id/myLocationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="50dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/ic_shape_circle"
+                android:elevation="10dp"
+                tools:ignore="UnusedAttribute">
 
-    </RelativeLayout>
+                <ImageView
+                    android:id="@+id/myLocationImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@string/contentdescription"
+                    android:src="@drawable/ic_my_location_black_24dp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </FrameLayout>
 
 </FrameLayout>

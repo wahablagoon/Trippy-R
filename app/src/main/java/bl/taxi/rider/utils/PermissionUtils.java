@@ -11,8 +11,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import bl.taxi.rider.R.string;
@@ -27,20 +27,7 @@ public abstract class PermissionUtils {
      * be shown to the user, displays a dialog that triggers the request.
      * @param permission_description The permission description required to show in the Rationale dialog
      */
-    /*public static void requestPermission(AppCompatActivity activity, int requestId,
-                                         String permission, String permission_description, boolean finishActivity) {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-            // Display a dialog with rationale.
-            PermissionUtils.RationaleDialog.newInstance(permission, permission_description, requestId, finishActivity)
-                    .show(activity.getSupportFragmentManager(), "dialog");
-        } else {
-            // Location permission has not been granted yet, request it.
-            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
-
-        }
-    }*/
-
-    public static void requestPermission(FragmentActivity activity, int requestId,
+    public static void requestPermission(AppCompatActivity activity, int requestId,
                                          String permission, String permission_description, boolean finishActivity) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
             // Display a dialog with rationale.
@@ -52,6 +39,19 @@ public abstract class PermissionUtils {
 
         }
     }
+
+    /*public static void requestPermission(FragmentActivity activity, int requestId,
+                                         String permission, String permission_description, boolean finishActivity) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+            // Display a dialog with rationale.
+            PermissionUtils.RationaleDialog.newInstance(permission, permission_description, requestId, finishActivity)
+                    .show(activity.getSupportFragmentManager(), "dialog");
+        } else {
+            // Location permission has not been granted yet, request it.
+            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
+
+        }
+    }*/
 
     /**
      * Checks if the result contains a {@link PackageManager#PERMISSION_GRANTED} result for a
