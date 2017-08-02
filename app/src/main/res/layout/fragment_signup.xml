@@ -6,14 +6,14 @@
     tools:context="bl.taxi.rider.fragments.OTPFragment">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/otp_toolbar_layout"
+        android:id="@+id/toolbar_layout"
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@android:color/white">
 
         <ImageButton
-            android:id="@+id/otp_button_back"
+            android:id="@+id/button_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -37,7 +37,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/otp_toolbar_layout"
+        android:layout_below="@id/toolbar_layout"
         android:background="@android:color/white"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -59,7 +59,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/otp_mobile_no"
+            android:id="@+id/mobile_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/verify_text"
@@ -113,7 +113,7 @@
 
 
         <Button
-            android:id="@+id/button_log_in"
+            android:id="@+id/button_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -128,15 +128,15 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_alignTop="@id/button_log_in"
+            android:layout_alignTop="@id/button_register"
             android:background="@android:color/darker_gray" />
 
         <TextView
-            android:id="@+id/otp_count_down"
+            android:id="@+id/terms_conditions"
             fontPath="fonts/Quicksand-Bold.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/button_log_in"
+            android:layout_above="@id/button_register"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
             android:layout_alignParentEnd="true"
