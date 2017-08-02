@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -84,7 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @BindView(R.id.map_toolbar)
     Toolbar mapToolbar;
     @BindView(R.id.map_fragment_container)
-    RelativeLayout mapFragmentContainer;
+    FrameLayout mapFragmentContainer;
     @BindView(R.id.myLocationButton)
     RelativeLayout myLocationButton;
     // Material Drawer
@@ -265,7 +266,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LocationRequest mLocationRequest = new LocationRequest();
             mLocationRequest.setInterval(10000); //10 seconds
             mLocationRequest.setFastestInterval(5000); //5 seconds
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
             // Avoid Duplicate Listeners
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
