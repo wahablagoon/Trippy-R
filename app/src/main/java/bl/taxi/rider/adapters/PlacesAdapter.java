@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import bl.taxi.rider.MapsActivity;
 import bl.taxi.rider.R;
@@ -55,27 +54,20 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(PlacesAdapter.ViewHolder holder, int position) {
-        final int holderPosition = position;
-        System.out.println("Response in Adapter"+placesList.get(position).getDescription());
-        if (placesAutoComplete.getStatus().equals("OK")) {
-            StringTokenizer st = new StringTokenizer(placesList.get(position).getDescription(), ",");
 
-            holder.name.setText(st.nextToken());
-            String desc_detail = "";
-            for (int i = 1; i < st.countTokens(); i++) {
-                if (i == st.countTokens() - 1) {
-                    desc_detail = desc_detail + st.nextToken();
-                } else {
-                    desc_detail = desc_detail + st.nextToken() + ",";
-                }
-            }
-            holder.location.setText(desc_detail);
+        final Prediction prediction = placesList.get(position);
+
+        if (placesAutoComplete.getStatus().equals("OK")) {
+
+            holder.name.setText(prediction.getStructuredFormatting().getMainText());
+
+            holder.location.setText(prediction.getStructuredFormatting().getSecondaryText());
+
             holder.places_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     MapsActivity mapsActivity = (MapsActivity) activity;
-                    mapsActivity.dropText.setText(placesList.get(holderPosition).getDescription());
-                    mapsActivity.selectedLocation = placesList.get(holderPosition);
+                    mapsActivity.onPlaceSelected(prediction.getDescription(), prediction);
                     mapsActivity.getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                 }
             });
