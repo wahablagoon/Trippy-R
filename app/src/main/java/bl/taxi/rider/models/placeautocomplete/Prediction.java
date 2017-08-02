@@ -3,6 +3,8 @@ package bl.taxi.rider.models.placeautocomplete;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Prediction {
 
     @SerializedName("description")
@@ -20,15 +22,15 @@ public class Prediction {
     @SerializedName("reference")
     @Expose
     private String reference;
-    /*@SerializedName("structured_formatting")
+    @SerializedName("structured_formatting")
     @Expose
-    private StructuredFormatting structuredFormatting;*/
+    private StructuredFormatting structuredFormatting;
     /*@SerializedName("terms")
     @Expose
-    private List<Term> terms = null;
+    private List<Term> terms = null;*/
     @SerializedName("types")
     @Expose
-    private List<String> types = null;*/
+    private List<String> types = null;
 
     public String getDescription() {
         return description;
@@ -70,13 +72,13 @@ public class Prediction {
         this.reference = reference;
     }
 
-    /*public StructuredFormatting getStructuredFormatting() {
+    public StructuredFormatting getStructuredFormatting() {
         return structuredFormatting;
     }
 
     public void setStructuredFormatting(StructuredFormatting structuredFormatting) {
         this.structuredFormatting = structuredFormatting;
-    }*/
+    }
 
     /*public List<Term> getTerms() {
         return terms;
@@ -84,7 +86,7 @@ public class Prediction {
 
     public void setTerms(List<Term> terms) {
         this.terms = terms;
-    }
+    }*/
 
     public List<String> getTypes() {
         return types;
@@ -92,6 +94,6 @@ public class Prediction {
 
     public void setTypes(List<String> types) {
         this.types = types;
-    }*/
+    }
 
 }

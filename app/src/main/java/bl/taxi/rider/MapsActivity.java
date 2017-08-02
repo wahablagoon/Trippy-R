@@ -93,10 +93,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // My Location
     Location mCurrentLocation;
     @BindView(R.id.pickup_text)
-    public TextView pickupText;
+    TextView pickupText;
     @BindView(R.id.drop_text)
-    public TextView dropText;
-
+    TextView dropText;
     private int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
@@ -104,7 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String TAG = this.getClass().getSimpleName();
     private SettingsClient mSettingsClient;
     private boolean mExecutedOnce = false;
-    public Prediction selectedLocation;
+    private Prediction selectedLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -477,5 +476,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         transaction.replace(((ViewGroup) findViewById(R.id.map_container).getParent()).getId(), newFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public void onPlaceSelected (String locationText, Prediction prediction) {
+        dropText.setText(locationText);
+        selectedLocation = prediction;
     }
 }
