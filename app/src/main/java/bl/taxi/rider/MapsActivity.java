@@ -106,7 +106,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean ismResolvingError = false;
     private String TAG = this.getClass().getSimpleName();
     private SettingsClient mSettingsClient;
-    private Prediction selectedLocation;
+    public Prediction selectedLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +115,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ButterKnife.bind(this);
 
         setSupportActionBar(mapToolbar);
+        if (getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
 
         ismActivityCreated = true;
 
