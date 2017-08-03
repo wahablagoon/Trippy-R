@@ -20,7 +20,7 @@ public interface RetrofitAPI {
     Call<List<Model>> getData(
             @Path("email") String email,@Path("password") String password);
 
-    @GET("api/sentOTP/1/{cc}/{mobile_no}")
+    @GET("api/sentOTP/{cc}/{mobile_no}")
     Call<List<Model>> sendOTP(
             @Path("cc") String cc, @Path("mobile_no") String mobile_no);
 

@@ -1,10 +1,10 @@
 package bl.taxi.rider.fragments;
 
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -79,6 +79,7 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
         MyApplication.setCacheInstance(Constants.AUTO_COMPLETE_URL);
         retrofitAPI = MyApplication.getCacheService();
         unbinder = ButterKnife.bind(this, view);
+
         mCurrentLocation = getArguments().getString("strLocation");
         if (mCurrentLocation == null)
             mCurrentLocation = "";
@@ -90,10 +91,10 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(),
                 LinearLayoutManager.VERTICAL, false);
         placesListView.setLayoutManager(linearLayoutManager);
-        placesAdapter = new PlacesAdapter(getContext(), placesList, this, getActivity());
+        placesAdapter = new PlacesAdapter(getActivity().getApplicationContext(), placesList, this, getActivity());
         placesListView.setAdapter(placesAdapter);
         inputSearchPlaces.addTextChangedListener(this);
     }
@@ -127,7 +128,6 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
 
     @Override
     public void onResponse(@NonNull Call<PlacesAutoComplete> call, @NonNull Response<PlacesAutoComplete> response) {
-        System.out.println("response"+response);
         PlacesAutoComplete placesAutoComplete = response.body();
         if (placesAutoComplete == null) {
             return;

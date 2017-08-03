@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -353,6 +352,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     protected void onResume() {
+        Toast.makeText(this, "On Resume", Toast.LENGTH_SHORT).show();
         super.onResume();
 
         if (!InternetUtils.isOnline(getApplicationContext())) {
@@ -493,14 +493,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             location = String.valueOf(mCurrentLocation.getLatitude()) + "," +
                     String.valueOf(mCurrentLocation.getLongitude());
         }
-        android.support.v4.app.Fragment newFragment = DestinationFragment.newInstance();
+        Fragment newFragment = DestinationFragment.newInstance();
         Bundle locationParam = new Bundle();
         if (location != null)
             locationParam.putString("strLocation", location);
         else
             locationParam.putString("strLocation", "");
         newFragment.setArguments(locationParam);
-        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.map_fragment_container, newFragment);
         transaction.addToBackStack(null);
         transaction.commit();

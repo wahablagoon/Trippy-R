@@ -1,9 +1,8 @@
 package bl.taxi.rider.adapters;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,14 +27,12 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
     private Context mContext;
     private ArrayList<Prediction> placesList;
     private Fragment fragment;
-    private FragmentActivity activity;
+    private Activity activity;
 
     private PlacesAutoComplete placesAutoComplete;
 
-    public PlacesAdapter(Context context, ArrayList<Prediction> placesList, DestinationFragment fragment,
-                         FragmentActivity activity) {
-
-        this.mContext = context;
+    public PlacesAdapter(Context applicationContext, ArrayList<Prediction> placesList, DestinationFragment fragment, Activity activity) {
+        this.mContext = applicationContext;
         this.placesList = placesList;
         this.fragment = fragment;
         this.activity = activity;
@@ -68,7 +65,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
                 public void onClick(View view) {
                     MapsActivity mapsActivity = (MapsActivity) activity;
                     mapsActivity.onPlaceSelected(prediction.getDescription(), prediction);
-                    mapsActivity.getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                    mapsActivity.getFragmentManager().beginTransaction().remove(fragment).commit();
                 }
             });
         }

@@ -39,22 +39,32 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps">
-            <intent-filter>
-
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
+                <data
+                    android:host="www.bluelagoontechnologies.com"
+                    android:pathPrefix="/trippy"
+                    android:scheme="http" />
+            </intent-filter>-->
+        </activity>
+        <activity android:name=".SplashIntroActivity">
+             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:host="www.bluelagoontechnologies.com"
                     android:pathPrefix="/trippy"
                     android:scheme="http" />
             </intent-filter>
-        </activity>
-        <activity android:name=".SplashIntroActivity">
-
         </activity>
         <activity android:name=".SplashActivity">
         </activity>
