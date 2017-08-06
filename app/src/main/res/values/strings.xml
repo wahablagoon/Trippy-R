@@ -72,7 +72,6 @@
     <string name="input_location_hint">Search for a locality or landmark..</string>
     <string name="location">Location</string>
     <string name="location_detail">Location Detail</string>
-    <string name="enter_pickup_location">Enter pickup location</string>
     <string name="pickup_from">Enter pickup location</string>
     <string name="drop_to">Enter drop location</string>
     <string name="full_name"><font size="18">Full name</font></string>

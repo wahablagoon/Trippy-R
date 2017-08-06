@@ -11,13 +11,21 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.ChangeBounds;
+import android.support.transition.Transition;
+import android.support.transition.TransitionManager;
+import android.support.transition.TransitionSet;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,7 +71,8 @@ import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,
+        Transition.TransitionListener {
 
     // Constant request codes for onActivity result
     private static final int GOOGLE_DEFAULT_ZOOM = 15;
@@ -100,12 +109,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     TextView toolbarTitle;
     @BindView(R.id.save_text)
     TextView saveText;
+    @BindView(R.id.drop_layout)
+    LinearLayout dropLayout;
+    @BindView(R.id.pickup_layout)
+    LinearLayout pickupLayout;
+    @BindView(R.id.text_location_layout)
+    FrameLayout textLocationLayout;
     private int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
     private boolean ismResolvingError = false;
     private String TAG = this.getClass().getSimpleName();
     private SettingsClient mSettingsClient;
+    private ViewGroup transitionsContainer;
+    private TransitionSet mTransitionSet;
     public Prediction selectedLocation;
 
     @Override
@@ -114,8 +131,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
         ButterKnife.bind(this);
 
+        transitionsContainer = findViewById(R.id.text_location_layout);
+        mTransitionSet = new TransitionSet().addListener(this)
+                .addTransition(new ChangeBounds()).setDuration(500).setInterpolator(new AccelerateDecelerateInterpolator());
+
         setSupportActionBar(mapToolbar);
-        if (getSupportActionBar()!=null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
@@ -466,7 +487,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    @OnClick({R.id.pickup_text, R.id.drop_text, R.id.drawer_menu, R.id.save_text})
+    @OnClick({R.id.pickup_layout, R.id.drop_layout, R.id.drawer_menu, R.id.save_text})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -474,16 +495,52 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (toolbarTitle.getText().toString().equals(getString(R.string.app_name_caps)))
                     if (!drawer.isDrawerOpen())
                         drawer.openDrawer();
+                    else
+                        MapsActivity.this.onBackPressed();
                 else
                     MapsActivity.this.onBackPressed();
                 break;
 
-            case R.id.pickup_text:
-                getDestinationFragment();
+            case R.id.pickup_layout:
+
+                TransitionManager.beginDelayedTransition(transitionsContainer, mTransitionSet);
+                FrameLayout.LayoutParams drop1 = (FrameLayout.LayoutParams) dropLayout.getLayoutParams();
+                FrameLayout.LayoutParams pick1 = (FrameLayout.LayoutParams) pickupLayout.getLayoutParams();
+                if (pick1.leftMargin != 0) {
+                    textLocationLayout.bringChildToFront(pickupLayout);
+                    textLocationLayout.invalidate();
+                    textLocationLayout.requestLayout();
+                    drop1.setMargins(pick1.leftMargin, 0, pick1.rightMargin, 0);
+                    pick1.leftMargin = 0;
+                    pick1.rightMargin = 0;
+                    dropLayout.setLayoutParams(drop1);
+                    pickupLayout.setLayoutParams(pick1);
+                    dropLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.color_view_grey, null));
+                    pickupLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), android.R.color.white, null));
+                } else
+                    //getDestinationFragment();
+
                 break;
 
-            case R.id.drop_text:
-                getDestinationFragment();
+            case R.id.drop_layout:
+
+                TransitionManager.beginDelayedTransition(transitionsContainer, mTransitionSet);
+                FrameLayout.LayoutParams drop = (FrameLayout.LayoutParams) dropLayout.getLayoutParams();
+                FrameLayout.LayoutParams pick = (FrameLayout.LayoutParams) pickupLayout.getLayoutParams();
+                if (drop.leftMargin != 0) {
+                    textLocationLayout.bringChildToFront(dropLayout);
+                    textLocationLayout.invalidate();
+                    textLocationLayout.requestLayout();
+                    pick.setMargins(drop.leftMargin, 0, drop.rightMargin, 0);
+                    drop.leftMargin = 0;
+                    drop.rightMargin = 0;
+                    dropLayout.setLayoutParams(drop);
+                    pickupLayout.setLayoutParams(pick);
+                } else
+                    //getDestinationFragment();
+                    pickupLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.color_view_grey, null));
+                dropLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), android.R.color.white, null));
+
                 break;
 
             case R.id.save_text:
@@ -508,12 +565,37 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         transaction.replace(R.id.map_fragment_container, newFragment);
         transaction.addToBackStack(null);
         transaction.commit();
-        toolbarTitle.setText(getString(R.string.enter_pickup_location));
+        toolbarTitle.setText(getString(R.string.pickup_from));
         drawerMenu.setImageResource(R.drawable.ic_arrow_back_black_24dp);
     }
 
     public void onPlaceSelected(String locationText, Prediction prediction) {
         dropText.setText(locationText);
         selectedLocation = prediction;
+    }
+
+    @Override
+    public void onTransitionStart(@NonNull Transition transition) {
+
+    }
+
+    @Override
+    public void onTransitionEnd(@NonNull Transition transition) {
+        //getDestinationFragment();
+    }
+
+    @Override
+    public void onTransitionCancel(@NonNull Transition transition) {
+
+    }
+
+    @Override
+    public void onTransitionPause(@NonNull Transition transition) {
+
+    }
+
+    @Override
+    public void onTransitionResume(@NonNull Transition transition) {
+
     }
 }
