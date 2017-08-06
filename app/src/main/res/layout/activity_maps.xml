@@ -15,9 +15,9 @@
         android:layout_height="?android:attr/actionBarSize"
         android:background="@android:color/white"
         android:elevation="10dp"
-        app:contentInsetLeft="5dp"
-        app:contentInsetStart="5dp"
-        app:contentInsetStartWithNavigation="5dp"
+        app:contentInsetLeft="20dp"
+        app:contentInsetStart="20dp"
+        app:contentInsetStartWithNavigation="20dp"
         tools:ignore="UnusedAttribute">
 
         <ImageView
@@ -26,7 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
             android:src="@drawable/ic_drawer_menu_black"
-            tools:ignore="ContentDescription" />
+            tools:ignore="content_description"
+            android:contentDescription="@string/content_description" />
 
         <TextView
             android:id="@+id/toolbar_title"
@@ -143,7 +144,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:contentDescription="@string/contentdescription"
+                    android:contentDescription="@string/content_description"
                     android:src="@drawable/ic_my_location_black_24dp" />
 
             </RelativeLayout>

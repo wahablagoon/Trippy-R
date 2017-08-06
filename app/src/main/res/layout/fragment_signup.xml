@@ -19,7 +19,7 @@
             android:background="@null"
             android:padding="10dp"
             android:src="@drawable/ic_arrow_back_black_24dp"
-            tools:ignore="ContentDescription" />
+            tools:ignore="content_description" />
 
         <TextView
             android:id="@+id/textView"

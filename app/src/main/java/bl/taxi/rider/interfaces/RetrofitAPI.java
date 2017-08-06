@@ -24,6 +24,10 @@ public interface RetrofitAPI {
     Call<List<Model>> sendOTP(
             @Path("cc") String cc, @Path("mobile_no") String mobile_no);
 
+    @GET("api/updateOTP/{cc}/{mobile_no}/{verification_code}")
+    Call<List<Model>> updateOTP(
+            @Path("cc") String cc, @Path("mobile_no") String mobile_no, @Path("verification_code") String verification_code);
+
     @GET("json")
     Call<PlacesAutoComplete> getPlaces(
             @Query("input") String input, @Query("location") String location,

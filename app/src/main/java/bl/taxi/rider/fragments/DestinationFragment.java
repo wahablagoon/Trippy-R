@@ -94,7 +94,7 @@ public class DestinationFragment extends Fragment implements TextWatcher, Callba
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(),
                 LinearLayoutManager.VERTICAL, false);
         placesListView.setLayoutManager(linearLayoutManager);
-        placesAdapter = new PlacesAdapter(getActivity().getApplicationContext(), placesList, this, getActivity());
+        placesAdapter = new PlacesAdapter(placesList, this, getActivity());
         placesListView.setAdapter(placesAdapter);
         inputSearchPlaces.addTextChangedListener(this);
     }

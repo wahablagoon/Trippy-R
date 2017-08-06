@@ -7,8 +7,16 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import bl.taxi.rider.R;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +25,18 @@ import bl.taxi.rider.R;
  */
 public class SignUpFragment extends Fragment {
 
+
+    @BindView(R.id.button_back)
+    ImageButton buttonBack;
+    @BindView(R.id.mobile_no)
+    TextView mobileNo;
+    @BindView(R.id.input_full_name)
+    MaterialEditText inputFullName;
+    @BindView(R.id.input_email)
+    MaterialEditText inputEmail;
+    @BindView(R.id.button_register)
+    Button buttonRegister;
+    Unbinder unbinder;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -43,6 +63,7 @@ public class SignUpFragment extends Fragment {
         // Inflate the layout for this fragment
         View signUpFragment = inflater.inflate(R.layout.fragment_signup, container, false);
 
+        unbinder = ButterKnife.bind(this, signUpFragment);
         return signUpFragment;
     }
 
@@ -51,4 +72,9 @@ public class SignUpFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }
