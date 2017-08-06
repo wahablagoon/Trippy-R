@@ -2,6 +2,7 @@ package bl.taxi.rider;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -14,12 +15,23 @@ import com.heinrichreimersoftware.materialintro.slide.Slide;
 import bl.taxi.rider.fragments.IntroFragment;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static bl.taxi.rider.utils.Constants.MY_PREFS_NAME;
+
 public class SplashIntroActivity extends IntroActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Check Preferences
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String userId = prefs.getString("user_id", null);//Check if userId is Available
+        if(userId!=null) {
+            Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//Clear all previous Activities
+            startActivity(intent);
+            finish();//Clear Current Activity
+        }
 
         setButtonBackVisible(false);
         setButtonNextVisible(false);

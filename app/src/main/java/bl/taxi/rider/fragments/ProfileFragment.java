@@ -1,6 +1,7 @@
 package bl.taxi.rider.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,11 +13,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import bl.taxi.rider.R;
+import bl.taxi.rider.SplashIntroActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 import static bl.taxi.rider.utils.Constants.MY_PREFS_NAME;
 
@@ -114,7 +117,18 @@ public class ProfileFragment extends Fragment {
                 textInputPassword.setSelection(textInputPassword.getText().length());
                 break;
             case R.id.button_log_out:
+                clearPreferences();
+                Intent intent = new Intent(getActivity(), SplashIntroActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                getActivity().finish();
                 break;
         }
+    }
+
+    private void clearPreferences() { //Clear all saved preferences
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.clear();
+        editor.apply();
     }
 }

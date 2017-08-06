@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -61,6 +62,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static bl.taxi.rider.utils.Constants.MY_PREFS_NAME;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -124,6 +127,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mSettingsClient = LocationServices.getSettingsClient(this);
 
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String userName = prefs.getString("user_name", null);
+        String userEmail = prefs.getString("user_email", null);
+
         // Create the AccountHeader
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -131,7 +138,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .withHeaderBackground(ResourcesCompat.getDrawable(getResources(), R.color.colorPrimary, null))
                 .withSelectionListEnabledForSingleProfile(false)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("STR").withEmail("msg2thirumalai@gmail.com").withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_account_circle, null))
+                        new ProfileDrawerItem().withName(userName).withEmail(userEmail).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_account_circle, null))
                 )
                 .withOnAccountHeaderSelectionViewClickListener(new AccountHeader.OnAccountHeaderSelectionViewClickListener() {
                     @Override
