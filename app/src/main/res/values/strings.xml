@@ -17,6 +17,7 @@
     </plurals>
 
     <string name="otp_static">You will get OTP by SMS in 20 seconds</string>
+    <string name="agree_terms">By registering, you are agreeing to \n Terms &amp; Conditions</string>
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to use the \'my location\' feature, which shows your current location on the map.</string>
@@ -72,5 +73,15 @@
     <string name="contentdescription">contentdescription</string>
     <string name="create_account">Create account</string>
     <string name="enter_details_to_create_account_with_phone_number">Enter details to create account with phone number</string>
+    <string name="input_location_hint">Search for a locality or landmark..</string>
+    <string name="location">Location</string>
+    <string name="location_detail">Location Detail</string>
+    <string name="enter_pickup_location">Enter pickup location</string>
+    <string name="pickup_from">Enter pickup location</string>
+    <string name="drop_to">Enter drop location</string>
+    <string name="full_name"><font size="18">Full name</font></string>
+    <string name="email_optional"><font size="18">Email (Optional)</font></string>
+    <string name="create_account">Create account</string>
+    <string name="enter_details_to_create_account_with">Enter details to create account with %2$d</string>
     <string name="register">REGISTER</string>
 </resources>

@@ -11,16 +11,15 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -53,7 +52,9 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import bl.taxi.rider.fragments.DestinationFragment;
 import bl.taxi.rider.fragments.ProfileFragment;
+import bl.taxi.rider.models.placeautocomplete.Prediction;
 import bl.taxi.rider.utils.InternetUtils;
 import bl.taxi.rider.utils.PermissionUtils;
 import butterknife.BindView;
@@ -61,7 +62,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     // Constant request codes for onActivity result
@@ -73,18 +74,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // Play services request code
     private static final int REQUEST_RESOLVE_ERROR = 33;
 
-
     /**
      * Flag indicating whether a permission is already requested or not
      */
-    private static boolean mPermissionRequested = false;
-
+    private static boolean ismPermissionRequested = false;
+    private static boolean ismLocationEnabled = false;
+    // Flag indicate whether activity is created or not
+    private static boolean ismActivityCreated = false;
     @BindView(R.id.drawer_menu)
     ImageView drawerMenu;
     @BindView(R.id.map_toolbar)
     Toolbar mapToolbar;
-    @BindView(R.id.map_fragment_container)
-    FrameLayout mapFragmentContainer;
     @BindView(R.id.myLocationButton)
     RelativeLayout myLocationButton;
     // Material Drawer
@@ -92,19 +92,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     AccountHeader headerResult;
     // My Location
     Location mCurrentLocation;
+    @BindView(R.id.pickup_text)
+    TextView pickupText;
+    @BindView(R.id.drop_text)
+    TextView dropText;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
+    @BindView(R.id.save_text)
+    TextView saveText;
     private int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
-    private boolean mResolvingError = false;
+    private boolean ismResolvingError = false;
     private String TAG = this.getClass().getSimpleName();
     private SettingsClient mSettingsClient;
-    private boolean mExecutedOnce = false;
+    public Prediction selectedLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         ButterKnife.bind(this);
+
+        setSupportActionBar(mapToolbar);
+        if (getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+
+        ismActivityCreated = true;
 
         mSettingsClient = LocationServices.getSettingsClient(this);
 
@@ -120,13 +136,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .withOnAccountHeaderSelectionViewClickListener(new AccountHeader.OnAccountHeaderSelectionViewClickListener() {
                     @Override
                     public boolean onClick(View view, IProfile profile) {
-                        if(drawer.isDrawerOpen())
+                        if (drawer.isDrawerOpen())
                             drawer.closeDrawer();
+
                         Fragment newFragment = ProfileFragment.newInstance();
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(((ViewGroup)findViewById(R.id.map_container).getParent()).getId(), newFragment);
+                        transaction.replace(R.id.map_fragment_container, newFragment);
                         transaction.addToBackStack(null);
                         transaction.commit();
+                        toolbarTitle.setText(getString(R.string.profiles_amp_settings));
+                        drawerMenu.setImageResource(R.drawable.ic_arrow_back_black_24dp);
+
                         return true;
                     }
                 })
@@ -137,17 +157,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .withAccountHeader(headerResult)
                 .withSelectedItem(-1)
                 .addDrawerItems(
-                        new SecondaryDrawerItem().withName(R.string.nav_book_ride).withIdentifier(1).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_local_taxi_black_24dp, null)),
-                        new SecondaryDrawerItem().withName(R.string.nav_your_rides).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_access_time_black_24dp, null)),
-                        new SecondaryDrawerItem().withName(R.string.nav_rate_card).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_local_ratecard, null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_book_ride).withTextColorRes(android.R.color.black)
+                                .withIdentifier(1)
+                                .withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_local_taxi_black_24dp, null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_your_rides).withTextColorRes(android.R.color.black)
+                                .withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_access_time_black_24dp, null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_rate_card).withTextColorRes(android.R.color.black)
+                                .withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_local_ratecard, null)),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(R.string.nav_wallet).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_local_wallet_24dp, null)),
-                        new SecondaryDrawerItem().withName(R.string.nav_payment).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_credit_card_black_24dp, null)),
-                        new SecondaryDrawerItem().withName(R.string.nav_offers).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_local_offer, null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_wallet).withTextColorRes(android.R.color.black)
+                                .withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_local_wallet_24dp, null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_payment).withTextColorRes(android.R.color.black)
+                                .withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_credit_card_black_24dp, null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_offers).withTextColorRes(android.R.color.black)
+                                .withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_local_offer, null)),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(R.string.nav_emergency).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_folder_shared_black_24dp, null)),
+                        new SecondaryDrawerItem().withName(R.string.nav_emergency).withTextColorRes(android.R.color.black)
+                                .withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_folder_shared_black_24dp, null)),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(R.string.nav_support).withIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_chat_bubble_outline_black_24dp, null))
+                        new SecondaryDrawerItem().withName(R.string.nav_support).withTextColorRes(android.R.color.black)
+                                .withIcon(ResourcesCompat.getDrawable(getResources(),
+                                        R.drawable.ic_chat_bubble_outline_black_24dp, null))
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -183,12 +213,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        if (mResolvingError) {
+        if (ismResolvingError) {
             // Already attempting to resolve an error.
             Log.d("Play Service resolving", connectionResult.getErrorMessage());
         } else if (connectionResult.hasResolution()) {
             try {
-                mResolvingError = true;
+                ismResolvingError = true;
                 connectionResult.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
             } catch (IntentSender.SendIntentException e) {
                 // There was an error with the resolution intent. Try again.
@@ -199,7 +229,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
             apiAvailability.getErrorDialog(this, connectionResult.getErrorCode(), REQUEST_RESOLVE_ERROR).show();
             //Toast.makeText(MapsActivity.this, R.string.google_api_connection_fail, Toast.LENGTH_LONG).show();
-            mResolvingError = true;
+            ismResolvingError = true;
         }
     }
 
@@ -225,8 +255,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 // Permission to access the location is missing.
-                if (!mPermissionRequested) {
-                    mPermissionRequested = true;
+                if (!ismPermissionRequested) {
+                    ismPermissionRequested = true;
                     PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
                             Manifest.permission.ACCESS_FINE_LOCATION, getString(R.string.permission_rationale_location), true);
                 }
@@ -245,6 +275,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 == PackageManager.PERMISSION_GRANTED) {
 
             // Access to the location has been granted to the app.
+            ismLocationEnabled = true;
 
             Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
 
@@ -258,7 +289,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LocationRequest mLocationRequest = new LocationRequest();
             mLocationRequest.setInterval(10000); //10 seconds
             mLocationRequest.setFastestInterval(5000); //5 seconds
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
             // Avoid Duplicate Listeners
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
@@ -295,14 +326,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // Check for the integer request code originally supplied to startResolutionForResult().
             case REQUEST_CHECK_SETTINGS:
                 switch (resultCode) {
-                    case FragmentActivity.RESULT_OK:
+                    case AppCompatActivity.RESULT_OK:
                         Log.i(TAG, "User agreed to make required location settings changes.");
-                        if (!mExecutedOnce) {
+                        if (!ismLocationEnabled) {
                             enableMyLocation();
                         }
-                        mExecutedOnce = true;
                         break;
-                    case FragmentActivity.RESULT_CANCELED:
+                    case AppCompatActivity.RESULT_CANCELED:
                         Log.i(TAG, "User chose not to make required location settings changes.");
                         break;
                 }
@@ -320,16 +350,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     private void showMissingPermissionError() {
         PermissionUtils.PermissionDeniedDialog
-                .newInstance(getString(R.string.location_permission_denied), true).show(getSupportFragmentManager(), "dialog");
+                .newInstance(getString(R.string.location_permission_denied), true)
+                .show(getSupportFragmentManager(), "dialog");
     }
 
     @Override
     protected void onResume() {
+        Toast.makeText(this, "On Resume", Toast.LENGTH_SHORT).show();
         super.onResume();
 
-      /*  if (!InternetUtils.isOnline(getApplicationContext())) {
-
-        }*/
+        if (!InternetUtils.isOnline(getApplicationContext())) {
+            Toast.makeText(MapsActivity.this, "Slow Internet or disconnected. Check your Internet.", Toast.LENGTH_LONG).show();
+        } else if (!ismActivityCreated)
+            checkRequestPermission();
     }
 
     /**
@@ -355,10 +388,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.i(TAG, "All location settings are satisfied.");
 
                         //noinspection MissingPermission
-                        if (!mExecutedOnce) {
+                        if (!ismLocationEnabled) {
                             enableMyLocation();
                         }
-                        mExecutedOnce = true;
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
@@ -413,12 +445,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    @OnClick(R.id.drawer_menu)
-    public void drawerMenu(View view) {
-        if (!drawer.isDrawerOpen())
-            drawer.openDrawer();
-    }
-
     @OnClick(R.id.myLocationButton)
     public void onMyLocation(View view) {
 
@@ -432,12 +458,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .tilt(0)                                     // Sets the tilt of the camera to 0 degrees
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
         }
     }
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @OnClick({R.id.pickup_text, R.id.drop_text, R.id.drawer_menu, R.id.save_text})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+
+            case R.id.drawer_menu:
+                if (toolbarTitle.getText().toString().equals(getString(R.string.app_name_caps)))
+                    if (!drawer.isDrawerOpen())
+                        drawer.openDrawer();
+                else
+                    MapsActivity.this.onBackPressed();
+                break;
+
+            case R.id.pickup_text:
+                getDestinationFragment();
+                break;
+
+            case R.id.drop_text:
+                getDestinationFragment();
+                break;
+
+            case R.id.save_text:
+                break;
+        }
+    }
+
+    private void getDestinationFragment() {
+        String location = null;
+        if (mCurrentLocation != null) {
+            location = String.valueOf(mCurrentLocation.getLatitude()) + "," +
+                    String.valueOf(mCurrentLocation.getLongitude());
+        }
+        Fragment newFragment = DestinationFragment.newInstance();
+        Bundle locationParam = new Bundle();
+        if (location != null)
+            locationParam.putString("strLocation", location);
+        else
+            locationParam.putString("strLocation", "");
+        newFragment.setArguments(locationParam);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.map_fragment_container, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        toolbarTitle.setText(getString(R.string.enter_pickup_location));
+        drawerMenu.setImageResource(R.drawable.ic_arrow_back_black_24dp);
+    }
+
+    public void onPlaceSelected(String locationText, Prediction prediction) {
+        dropText.setText(locationText);
+        selectedLocation = prediction;
     }
 }

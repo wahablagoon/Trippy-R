@@ -29,9 +29,17 @@ public class SplashIntroActivity extends IntroActivity {
 
 
         final Slide introSlide;
-        introSlide= new FragmentSlide.Builder()
+        introSlide = new FragmentSlide.Builder()
                 .background(R.color.color_canteen)
                 .backgroundDark(R.color.colorPrimary)
+                .buttonCtaLabel("\t \t \t \t \t Book Ride \t \t \t \t \t")
+                .buttonCtaClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+                        startActivity(intent);
+                    }
+                })
                 .fragment(IntroFragment.newInstance())
                 .build();
         addSlide(introSlide);

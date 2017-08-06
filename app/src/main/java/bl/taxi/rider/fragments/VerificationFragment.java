@@ -109,6 +109,7 @@ public class VerificationFragment extends Fragment {
         query.enqueue(new Callback<List<Model>>() {
             @Override
             public void onResponse(@NonNull Call<List<Model>> call, @NonNull Response<List<Model>> response) {
+                System.out.println("response = " + response);
                 buttonNext.setEnabled(true);
                 progressBar.setVisibility(View.GONE);
                 List<Model> result = response.body();
@@ -157,8 +158,8 @@ public class VerificationFragment extends Fragment {
         String inputNumber = mobileNumber.getText().toString();
         if (inputNumber.length() <= 1) {
             return false;
-        } else {
-            if (validatePhone()) {
+        }
+        if (validatePhone()) {
                 PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
                 String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(91);
                 Phonenumber.PhoneNumber phoneNumber = null;
@@ -173,7 +174,6 @@ public class VerificationFragment extends Fragment {
             }
             setEnabled(true, R.color.colorPrimary);
             return true;
-        }
     }
 
     private boolean validatePhone() {

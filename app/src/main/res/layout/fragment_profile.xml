@@ -1,56 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ECECEC">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:layout_alignParentTop="true"
-        android:background="@android:color/white">
-
-        <ImageButton
-            android:id="@+id/drawer_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:src="@drawable/ic_drawer_menu_black"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/toolbar_title"
-            fontPath="fonts/Quicksand-Bold.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center"
-            android:text="@string/profiles_amp_settings"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="30dp"
-            android:layout_marginStart="30dp"
-            android:textSize="16sp"
-            tools:ignore="MissingPrefix" />
-
-        <TextView
-            android:id="@+id/save_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/save"
-            android:textColor="@color/otp_text"
-            android:textSize="16sp" />
-
-    </android.support.v7.widget.Toolbar>
-
     <RelativeLayout
         android:id="@+id/profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
         android:background="@android:color/white"
         android:foreground="@drawable/bottom_shadow">
 
@@ -78,19 +36,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_toRightOf="@id/mobile_image"
                 android:layout_toEndOf="@id/mobile_image"
+                android:layout_toRightOf="@id/mobile_image"
                 android:text="@string/mobile_number_text"
-                android:textColor="@color/otp_text" />
+                android:textColor="@color/color_otp_text" />
 
             <ImageButton
                 android:id="@+id/mobile_edit_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
                 android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_pencil"
@@ -103,18 +61,17 @@
                 android:layout_below="@id/mobile_text"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@id/mobile_edit_icon"
-                android:layout_toStartOf="@id/mobile_edit_icon"
-                android:layout_toRightOf="@id/mobile_image"
                 android:layout_toEndOf="@id/mobile_image"
-                android:hint="@string/_10_digit_mobile_number"
+                android:layout_toLeftOf="@id/mobile_edit_icon"
+                android:layout_toRightOf="@id/mobile_image"
+                android:layout_toStartOf="@id/mobile_edit_icon"
                 android:background="@android:color/transparent"
+                android:hint="@string/_10_digit_mobile_number"
                 android:inputType="number"
                 android:maxLength="10"
-                android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:textColorHint="@color/otp_text"
-                />
+                android:textColorHint="@color/color_otp_text"
+                android:textSize="16sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -123,7 +80,7 @@
                 android:layout_alignStart="@id/input_mobile"
                 android:layout_below="@id/input_mobile"
                 android:layout_marginTop="5dp"
-                android:background="@color/view_grey" />
+                android:background="@color/color_view_grey" />
 
         </RelativeLayout>
 
@@ -152,19 +109,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_toRightOf="@id/profile_icon"
                 android:layout_toEndOf="@id/profile_icon"
+                android:layout_toRightOf="@id/profile_icon"
                 android:text="@string/name_text"
-                android:textColor="@color/otp_text" />
+                android:textColor="@color/color_otp_text" />
 
             <ImageButton
                 android:id="@+id/name_edit_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
                 android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_pencil"
@@ -177,18 +134,17 @@
                 android:layout_below="@id/text_name"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@android:color/transparent"
-                android:layout_toLeftOf="@id/name_edit_icon"
-                android:layout_toStartOf="@id/name_edit_icon"
-                android:layout_toRightOf="@id/profile_icon"
                 android:layout_toEndOf="@id/profile_icon"
+                android:layout_toLeftOf="@id/name_edit_icon"
+                android:layout_toRightOf="@id/profile_icon"
+                android:layout_toStartOf="@id/name_edit_icon"
+                android:background="@android:color/transparent"
                 android:hint="@string/profile_name_hint"
                 android:inputType="number"
                 android:maxLength="10"
-                android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:textColorHint="@color/otp_text"
-                />
+                android:textColorHint="@color/color_otp_text"
+                android:textSize="16sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -197,7 +153,7 @@
                 android:layout_alignStart="@id/text_input_name"
                 android:layout_below="@id/text_input_name"
                 android:layout_marginTop="5dp"
-                android:background="@color/view_grey" />
+                android:background="@color/color_view_grey" />
 
         </RelativeLayout>
 
@@ -226,19 +182,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_toRightOf="@id/email_icon"
                 android:layout_toEndOf="@id/email_icon"
+                android:layout_toRightOf="@id/email_icon"
                 android:text="@string/email_text"
-                android:textColor="@color/otp_text" />
+                android:textColor="@color/color_otp_text" />
 
             <ImageButton
                 android:id="@+id/email_edit_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
                 android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_pencil"
@@ -251,17 +207,17 @@
                 android:layout_below="@id/text_email"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@id/email_edit_icon"
-                android:layout_toStartOf="@id/email_edit_icon"
-                android:layout_toRightOf="@id/email_icon"
                 android:layout_toEndOf="@id/email_icon"
-                android:hint="@string/email_address_hint"
+                android:layout_toLeftOf="@id/email_edit_icon"
+                android:layout_toRightOf="@id/email_icon"
+                android:layout_toStartOf="@id/email_edit_icon"
                 android:background="@android:color/transparent"
+                android:hint="@string/email_address_hint"
                 android:inputType="textEmailAddress"
                 android:maxLength="10"
-                android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:textColorHint="@color/otp_text"/>
+                android:textColorHint="@color/color_otp_text"
+                android:textSize="16sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -270,7 +226,7 @@
                 android:layout_alignStart="@id/text_input_email"
                 android:layout_below="@id/text_input_email"
                 android:layout_marginTop="5dp"
-                android:background="@color/view_grey" />
+                android:background="@color/color_view_grey" />
 
         </RelativeLayout>
 
@@ -299,19 +255,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_toRightOf="@id/password_icon"
                 android:layout_toEndOf="@id/password_icon"
+                android:layout_toRightOf="@id/password_icon"
                 android:text="@string/password_text"
-                android:textColor="@color/otp_text" />
+                android:textColor="@color/color_otp_text" />
 
             <ImageButton
                 android:id="@+id/password_edit_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
                 android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_pencil"
@@ -322,22 +278,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_password"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_toLeftOf="@id/password_edit_icon"
-                android:layout_toStartOf="@id/password_edit_icon"
-                android:layout_toRightOf="@id/password_icon"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/password_icon"
-                android:hint="@string/password_hint"
+                android:layout_toLeftOf="@id/password_edit_icon"
+                android:layout_toRightOf="@id/password_icon"
+                android:layout_toStartOf="@id/password_edit_icon"
                 android:background="@android:color/transparent"
+                android:hint="@string/password_hint"
                 android:inputType="numberPassword"
                 android:maxLength="10"
-                android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:textColorHint="@color/otp_text"/>
+                android:textColorHint="@color/color_otp_text"
+                android:textSize="16sp" />
 
         </RelativeLayout>
 
@@ -346,20 +301,16 @@
             android:layout_height="1dp"
             android:layout_alignBottom="@id/password_layout"
             android:layout_marginTop="5dp"
-            android:background="@color/otp_text"
+            android:background="@color/color_otp_text"
             tools:ignore="UnknownId" />
 
     </RelativeLayout>
 
     <Button
         android:id="@+id/button_log_out"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
+        android:layout_gravity="bottom"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -368,4 +319,4 @@
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
-</RelativeLayout>
+</FrameLayout>

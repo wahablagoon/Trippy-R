@@ -73,7 +73,7 @@
             android:layout_marginRight="30dp"
             android:layout_marginTop="30dp"
             android:text="@string/verify_auto"
-            android:textColor="@color/otp_text"
+            android:textColor="@color/color_otp_text"
             android:textSize="18sp" />
 
         <TextView
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/verify_text"
             android:text="@string/_10_digit_mobile_number"
-            android:textColor="@color/otp_text"
+            android:textColor="@color/color_otp_text"
             android:textSize="18sp"
             android:visibility="gone" />
 
@@ -151,7 +151,7 @@
             android:layout_marginBottom="10dp"
             android:gravity="center"
             android:text="@string/otp_static"
-            android:textColor="@color/otp_text"
+            android:textColor="@color/color_otp_text"
             tools:ignore="MissingPrefix" />
 
     </RelativeLayout>

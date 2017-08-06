@@ -21,18 +21,24 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MyApplication extends Application {
 
     private static Retrofit instance;
-    private static Retrofit cache_instance;
     private static RetrofitAPI service;
     private static RetrofitAPI cache_service;
-    private static Cache cache;
+    private static OkHttpClient okHttpClient;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
         MultiDex.install(this);
         setInstance();
+
         int cacheSize = 10 * 1024 * 1024; // 10 MB
-        cache = new Cache(getCacheDir(), cacheSize);
+        Cache cache = new Cache(getCacheDir(), cacheSize);
+
+        okHttpClient = new OkHttpClient.Builder()
+                .cache(cache)
+                .build();
+
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath(getString(R.string.font_regular))
                 .setFontAttrId(R.attr.fontPath)
@@ -42,7 +48,7 @@ public class MyApplication extends Application {
 
     private synchronized static void setInstance () {
         instance = new Retrofit.Builder()
-                .baseUrl(Constants.Base_url)
+                .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -56,15 +62,11 @@ public class MyApplication extends Application {
         return service;
     }
 
-    private synchronized static void setCacheInstance () {
+    public synchronized static void setCacheInstance (String baseUrl) {
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .cache(cache)
-                .build();
-
-        cache_instance = new Retrofit.Builder()
-                .baseUrl(Constants.Base_url)
+        Retrofit cache_instance = new Retrofit.Builder()
                 .client(okHttpClient)
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -72,9 +74,7 @@ public class MyApplication extends Application {
     }
 
     public static RetrofitAPI getCacheService () {
-        if (cache_instance == null) {
-            setCacheInstance();
-        }
+
         return cache_service;
     }
 

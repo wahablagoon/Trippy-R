@@ -12,7 +12,7 @@ repositories {
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "bl.taxi.rider"
         minSdkVersion 15
@@ -41,6 +41,7 @@ dependencies {
     })
     //Android support
     compile "com.android.support:appcompat-v7:$AndroidSupportVersion"
+    compile "com.android.support:cardview-v7:$AndroidSupportVersion"
     compile "com.android.support:design:$AndroidSupportVersion"
     compile "com.android.support:support-v4:$AndroidSupportVersion"
     compile "com.android.support:support-v13:$AndroidSupportVersion"
@@ -52,6 +53,7 @@ dependencies {
     compile "com.google.android.gms:play-services-base:$playServicesVersion"
     //MultiDex
     compile 'com.android.support:multidex:1.0.2'
+    androidTestCompile 'com.android.support:multidex:1.0.2'
     //Retrofit2
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -76,8 +78,4 @@ dependencies {
     compile 'com.github.florent37:expectanim:1.0.7'
 
     testCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support:multidex:1.0.2'
-
-
-
 }
