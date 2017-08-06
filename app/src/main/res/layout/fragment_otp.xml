@@ -13,7 +13,7 @@
         android:background="@android:color/white">
 
         <ImageButton
-            android:id="@+id/otp_button_back"
+            android:id="@+id/button_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -35,6 +35,22 @@
             tools:ignore="MissingPrefix" />
 
     </android.support.v7.widget.Toolbar>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/otp_toolbar_layout"
+        android:layout_alignLeft="@id/otp_toolbar_layout"
+        android:layout_alignStart="@id/otp_toolbar_layout"
+        android:layout_alignRight="@id/otp_toolbar_layout"
+        android:layout_alignEnd="@id/otp_toolbar_layout"
+        android:layout_marginBottom="-7dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorPrimary"
+        android:visibility="gone"
+        tools:targetApi="lollipop" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -111,6 +127,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:enabled="false"
             android:background="@android:color/transparent"
             android:text="@string/log_in"
             android:textColor="@android:color/darker_gray" />

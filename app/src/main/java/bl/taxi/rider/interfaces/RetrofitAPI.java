@@ -5,10 +5,8 @@ import java.util.List;
 
 import bl.taxi.rider.models.Model;
 import retrofit2.Call;
-import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 /**
  * Created by DELL on 09/07/2017.
@@ -20,7 +18,11 @@ public interface RetrofitAPI {
     Call<List<Model>> getData(
             @Path("email") String email,@Path("password") String password);
 
-    @GET("api/sentOTP/1/{cc}/{mobile_no}")
+    @GET("api/sentOTP/{cc}/{mobile_no}")
     Call<List<Model>> sendOTP(
             @Path("cc") String cc, @Path("mobile_no") String mobile_no);
+
+    @GET("api/updateOTP/{cc}/{mobile_no}/{verification_code}")
+    Call<List<Model>> updateOTP(
+            @Path("cc") String cc, @Path("mobile_no") String mobile_no, @Path("verification_code") String verification_code);
 }

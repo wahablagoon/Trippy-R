@@ -44,6 +44,8 @@
     <string name="verify_auto">Please wait.\nWe will auto verify the OTP sent to 10-digit mobile number</string>
     <string name="log_in">LOG IN</string>
     <string name="enter_4_digit_otp"><font size="18">Enter 4-digit OTP</font></string>
+    <string name="enter_full_name">Enter Full name</string>
+    <string name="enter_email">Enter Email</string>
     <string name="log_in_password">or log in with password</string>
     <!--    Custom Fonts    -->
     <string name="font_regular">fonts/Quicksand-Regular.ttf</string>
@@ -68,4 +70,7 @@
     <string name="profiles_amp_settings"><![CDATA[Profiles & Settings]]></string>
     <string name="save">Save</string>
     <string name="contentdescription">contentdescription</string>
+    <string name="create_account">Create account</string>
+    <string name="enter_details_to_create_account_with_phone_number">Enter details to create account with phone number</string>
+    <string name="register">REGISTER</string>
 </resources>
