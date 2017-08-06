@@ -2,7 +2,6 @@ package bl.taxi.rider.adapters;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,15 +23,13 @@ import bl.taxi.rider.models.placeautocomplete.Prediction;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder> {
 
-    private Context mContext;
     private ArrayList<Prediction> placesList;
     private Fragment fragment;
     private Activity activity;
 
     private PlacesAutoComplete placesAutoComplete;
 
-    public PlacesAdapter(Context applicationContext, ArrayList<Prediction> placesList, DestinationFragment fragment, Activity activity) {
-        this.mContext = applicationContext;
+    public PlacesAdapter(ArrayList<Prediction> placesList, DestinationFragment fragment, Activity activity) {
         this.placesList = placesList;
         this.fragment = fragment;
         this.activity = activity;
@@ -44,7 +41,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
 
     @Override
     public PlacesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+        LayoutInflater inflater = (activity).getLayoutInflater();
         View view = inflater.inflate(R.layout.places_autocomplete, parent, false);
         return new PlacesAdapter.ViewHolder(view);
     }

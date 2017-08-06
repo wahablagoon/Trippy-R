@@ -28,7 +28,8 @@
                 android:layout_marginStart="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_phone"
-                tools:ignore="ContentDescription" />
+                android:contentDescription="@string/content_description"
+                tools:ignore="content_description" />
 
             <TextView
                 android:id="@+id/mobile_text"
@@ -52,7 +53,8 @@
                 android:layout_marginTop="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_pencil"
-                tools:ignore="ContentDescription" />
+                android:contentDescription="@string/content_description"
+                tools:ignore="content_description" />
 
             <EditText
                 android:id="@+id/input_mobile"
@@ -101,7 +103,8 @@
                 android:layout_marginStart="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_account"
-                tools:ignore="ContentDescription" />
+                android:contentDescription="@string/content_description"
+                tools:ignore="content_description" />
 
             <TextView
                 android:id="@+id/text_name"
@@ -125,7 +128,8 @@
                 android:layout_marginTop="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_pencil"
-                tools:ignore="ContentDescription" />
+                android:contentDescription="@string/content_description"
+                tools:ignore="content_description" />
 
             <EditText
                 android:id="@+id/text_input_name"
@@ -174,7 +178,8 @@
                 android:layout_marginStart="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_email"
-                tools:ignore="ContentDescription" />
+                android:contentDescription="@string/content_description"
+                tools:ignore="content_description" />
 
             <TextView
                 android:id="@+id/text_email"
@@ -198,7 +203,8 @@
                 android:layout_marginTop="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_pencil"
-                tools:ignore="ContentDescription" />
+                android:contentDescription="@string/content_description"
+                tools:ignore="content_description" />
 
             <EditText
                 android:id="@+id/text_input_email"
@@ -214,7 +220,6 @@
                 android:background="@android:color/transparent"
                 android:hint="@string/email_address_hint"
                 android:inputType="textEmailAddress"
-                android:maxLength="10"
                 android:textColor="@android:color/black"
                 android:textColorHint="@color/color_otp_text"
                 android:textSize="16sp" />
@@ -247,7 +252,8 @@
                 android:layout_marginStart="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_password"
-                tools:ignore="ContentDescription" />
+                android:contentDescription="@string/content_description"
+                tools:ignore="content_description" />
 
             <TextView
                 android:id="@+id/text_password"
@@ -271,7 +277,8 @@
                 android:layout_marginTop="10dp"
                 android:background="@null"
                 android:src="@drawable/ic_local_pencil"
-                tools:ignore="ContentDescription" />
+                android:contentDescription="@string/content_description"
+                tools:ignore="content_description" />
 
             <EditText
                 android:id="@+id/text_input_password"
@@ -288,6 +295,7 @@
                 android:layout_toStartOf="@id/password_edit_icon"
                 android:background="@android:color/transparent"
                 android:hint="@string/password_hint"
+                android:text="@string/password_content"
                 android:inputType="numberPassword"
                 android:maxLength="10"
                 android:textColor="@android:color/black"

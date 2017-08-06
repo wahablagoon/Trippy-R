@@ -27,7 +27,7 @@
                 android:background="@null"
                 android:padding="10dp"
                 android:src="@drawable/ic_arrow_back_black_24dp"
-                android:contentDescription="@string/contentdescription" />
+                android:contentDescription="@string/content_description" />
 
             <TextView
                 android:id="@+id/textView"
@@ -120,7 +120,7 @@
                     android:background="@android:color/transparent"
                     android:src="@drawable/ic_close_black_24dp"
                     android:visibility="gone"
-                    android:contentDescription="@string/contentdescription"
+                    android:contentDescription="@string/content_description"
                     />
 
                 <com.rengwuxian.materialedittext.MaterialEditText

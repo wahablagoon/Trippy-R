@@ -1,6 +1,7 @@
 package bl.taxi.rider.fragments;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,6 +16,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static android.content.Context.MODE_PRIVATE;
+import static bl.taxi.rider.utils.Constants.MY_PREFS_NAME;
 
 public class ProfileFragment extends Fragment {
 
@@ -64,6 +68,17 @@ public class ProfileFragment extends Fragment {
         View profileFragment = inflater.inflate(R.layout.fragment_profile, container, false);
 
         unbinder = ButterKnife.bind(this, profileFragment);
+        SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String userName = prefs.getString("user_name", null);
+        String userEmail = prefs.getString("user_email", null);
+        String userMobile = prefs.getString("user_mobile", null);
+        if (userName != null)
+            textInputName.setText(userName);
+            textInputName.setSelection(textInputName.length());//set selection to end
+        if (userEmail != null)
+            textInputEmail.setText(userEmail);
+        if (userMobile!= null)
+            textInputMobile.setText(userMobile);
         return profileFragment;
     }
 

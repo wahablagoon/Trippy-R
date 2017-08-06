@@ -8,6 +8,7 @@ import bl.taxi.rider.models.placeautocomplete.PlacesAutoComplete;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by DELL on 09/07/2017.

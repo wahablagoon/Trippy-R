@@ -356,7 +356,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     protected void onResume() {
-        Toast.makeText(this, "On Resume", Toast.LENGTH_SHORT).show();
         super.onResume();
 
         if (!InternetUtils.isOnline(getApplicationContext())) {

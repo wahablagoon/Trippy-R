@@ -3,6 +3,7 @@ package bl.taxi.rider.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -42,6 +43,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.MODE_PRIVATE;
+import static bl.taxi.rider.utils.Constants.MY_PREFS_NAME;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link OTPFragment#newInstance} factory method to
@@ -52,7 +56,7 @@ public class OTPFragment extends Fragment {
     SmsVerifyCatcher smsVerifyCatcher;
 
     CountDownTimer OTP_countDownTimer;
-    @BindView(R.id.otp_button_back)
+    @BindView(R.id.button_back)
     ImageButton otpButtonBack;
     @BindView(R.id.otp_mobile_no)
     TextView otpMobileNo;
@@ -178,7 +182,7 @@ public class OTPFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.otp_button_back)
+    @OnClick(R.id.button_back)
     public void setButtonBack() {
         getFragmentManager().popBackStack();
     }
@@ -203,6 +207,7 @@ public class OTPFragment extends Fragment {
         query.enqueue(new Callback<List<Model>>() {
             @Override
             public void onResponse(@NonNull Call<List<Model>> call, @NonNull Response<List<Model>> response) {
+                System.out.println("response = " + response);
                 buttonNext.setEnabled(true);
                 progressBar.setVisibility(View.GONE);
                 List<Model> result = response.body();
@@ -210,6 +215,11 @@ public class OTPFragment extends Fragment {
                     for (int i = 0; i < result.size(); i++) {
                         String responseStatus = result.get(i).getStatus();
                         if (responseStatus.matches("Success")) {
+                            String userID = String.valueOf(result.get(i).getUserid());
+                            String userName = result.get(i).getFirstName()+" "+result.get(i).getLastName() ; //concatenate both first and last name
+                            String userEmail = result.get(i).getEmail();
+                            String userMobile= result.get(i).getMobile();
+                            savePreferences(userID,userName,userEmail,userMobile); //save the details in shared preferences
                             Intent intent = new Intent(getActivity(), MapsActivity.class);
                             startActivity(intent);
                         }
@@ -228,5 +238,15 @@ public class OTPFragment extends Fragment {
                 Log.e("Error", "retrofit", t);
             }
         });
+    }
+
+    public void savePreferences(String userID,String userName,String userEmail, String userMobile)
+    {
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString("user_id",userID);
+        editor.putString("user_name", userName);
+        editor.putString("user_email", userEmail);
+        editor.putString("user_mobile", userMobile);
+        editor.apply();
     }
 }
