@@ -96,6 +96,11 @@ public class OTPFragment extends Fragment {
         View otpFragment = inflater.inflate(R.layout.fragment_otp, container, false);
         unbinder = ButterKnife.bind(this, otpFragment);
 
+        String otpNumber = getArguments().getString("otp_number");
+        if(otpNumber !=null)
+            otpMobileNo.setText(otpNumber);
+
+
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         otpNumberEdit.addTextChangedListener(new TextWatcher() {
@@ -118,15 +123,13 @@ public class OTPFragment extends Fragment {
             }
         });
 
-        System.out.println("OTP Number" + getArguments().getString("otp_number"));
-        //otpMobileNo.setText(getArguments().getString("otp_number"));
-
         smsVerifyCatcher = new SmsVerifyCatcher(getActivity(), new OnSmsCatchListener<String>() {
             @Override
             public void onSmsCatch(String message) {
                 String code = parseCode(message);//Parse verification code
                 otpNumberEdit.setText(code);//set code in edit text
                 otpNumberEdit.setSelection(code.length());
+                setEnabled(true, R.color.colorPrimary);
                 //then you can send verification code to server
                 verifyOTP(code);
             }
@@ -214,13 +217,20 @@ public class OTPFragment extends Fragment {
                     for (int i = 0; i < result.size(); i++) {
                         String responseStatus = result.get(i).getStatus();
                         if (responseStatus.matches("Success")) {
-                            String userID = String.valueOf(result.get(i).getUserid());
-                            String userName = result.get(i).getFirstName()+" "+result.get(i).getLastName() ; //concatenate both first and last name
-                            String userEmail = result.get(i).getEmail();
-                            String userMobile= result.get(i).getMobile();
-                            savePreferences(userID,userName,userEmail,userMobile); //save the details in shared preferences
-                            Intent intent = new Intent(getActivity(), MapsActivity.class);
-                            startActivity(intent);
+                            if (result.get(i).getUserid()!=null) {
+                                String userID = String.valueOf(result.get(i).getUserid());
+                                String userName = result.get(i).getFirstName()+" "+result.get(i).getLastName() ; //concatenate both first and last name
+                                String userEmail = result.get(i).getEmail();
+                                String userMobile= result.get(i).getMobile();
+                                savePreferences(userID,userName,userEmail,userMobile); //save the details in shared preferences
+                                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                                startActivity(intent);
+                            }
+                            else
+                            {
+                                Toast.makeText(getActivity(), "New User", Toast.LENGTH_SHORT).show();
+                            }
+
                         }
                         else {
                             buttonNext.setEnabled(true);

@@ -19,7 +19,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 import static bl.taxi.rider.utils.Constants.MY_PREFS_NAME;
 
@@ -77,11 +76,11 @@ public class ProfileFragment extends Fragment {
         String userMobile = prefs.getString("user_mobile", null);
         if (userName != null)
             textInputName.setText(userName);
-            textInputName.setSelection(textInputName.length());//set selection to end
         if (userEmail != null)
             textInputEmail.setText(userEmail);
         if (userMobile!= null)
             textInputMobile.setText(userMobile);
+            textInputMobile.setSelection(textInputMobile.getText().length());//set selection to end
         return profileFragment;
     }
 
