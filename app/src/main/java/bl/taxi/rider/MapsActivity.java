@@ -109,7 +109,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @BindView(R.id.drop_text)
     TextView dropText;
     @BindView(R.id.toolbar_title)
-    TextView toolbarTitle;
+    public TextView toolbarTitle;
     @BindView(R.id.save_text)
     TextView saveText;
     @BindView(R.id.drop_layout)
@@ -124,8 +124,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean ismResolvingError = false;
     private String TAG = this.getClass().getSimpleName();
     private SettingsClient mSettingsClient;
-    private ViewGroup transitionsContainer;
-    private TransitionSet mTransitionSet;
+    ViewGroup transitionsContainer;
+    TransitionSet mTransitionSet;
     public Prediction selectedLocation;
 
     @Override
@@ -468,6 +468,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (drawer.isDrawerOpen()) {
             drawer.closeDrawer();
         } else {
+            toolbarTitle.setText(getString(R.string.app_name_caps));
+            drawerMenu.setImageResource(R.drawable.ic_drawer_menu_black);
             super.onBackPressed();
         }
     }
@@ -514,8 +516,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 FrameLayout.LayoutParams pick1 = (FrameLayout.LayoutParams) pickupLayout.getLayoutParams();
                 if (pick1.leftMargin != 0) {
                     textLocationLayout.bringChildToFront(pickupLayout);
-                    textLocationLayout.invalidate();
                     textLocationLayout.requestLayout();
+                    textLocationLayout.invalidate();
                     drop1.setMargins(pick1.leftMargin, 0, pick1.rightMargin, 0);
                     pick1.leftMargin = 0;
                     pick1.rightMargin = 0;
@@ -523,9 +525,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     pickupLayout.setLayoutParams(pick1);
                     dropLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.color_view_grey, null));
                     pickupLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), android.R.color.white, null));
-                } else
-                    //getDestinationFragment();
-
+                    toolbarTitle.setText(getString(R.string.pickup_from));
+                } else {
+                    toolbarTitle.setText(getString(R.string.pickup_from));
+                    getDestinationFragment();
+                }
                 break;
 
             case R.id.drop_layout:
@@ -535,18 +539,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 FrameLayout.LayoutParams pick = (FrameLayout.LayoutParams) pickupLayout.getLayoutParams();
                 if (drop.leftMargin != 0) {
                     textLocationLayout.bringChildToFront(dropLayout);
-                    textLocationLayout.invalidate();
                     textLocationLayout.requestLayout();
+                    textLocationLayout.invalidate();
                     pick.setMargins(drop.leftMargin, 0, drop.rightMargin, 0);
                     drop.leftMargin = 0;
                     drop.rightMargin = 0;
                     dropLayout.setLayoutParams(drop);
                     pickupLayout.setLayoutParams(pick);
-                } else
-                    //getDestinationFragment();
                     pickupLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.color_view_grey, null));
-                dropLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), android.R.color.white, null));
-
+                    dropLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), android.R.color.white, null));
+                    toolbarTitle.setText(getString(R.string.drop_to));
+                } else {
+                    toolbarTitle.setText(getString(R.string.drop_to));
+                    getDestinationFragment();
+                }
                 break;
 
             case R.id.save_text:
@@ -566,17 +572,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             locationParam.putString("strLocation", location);
         else
             locationParam.putString("strLocation", "");
+
         newFragment.setArguments(locationParam);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.map_fragment_container, newFragment);
         transaction.addToBackStack(null);
         transaction.commit();
-        toolbarTitle.setText(getString(R.string.pickup_from));
         drawerMenu.setImageResource(R.drawable.ic_arrow_back_black_24dp);
     }
 
-    public void onPlaceSelected(String locationText, Prediction prediction) {
-        dropText.setText(locationText);
+    public void onPlaceSelected(String isFrom, String locationText, Prediction prediction) {
+        if (isFrom.equals(getString(R.string.pickup_from))) {
+            pickupText.setText(locationText);
+        } else {
+            dropText.setText(locationText);
+        }
         selectedLocation = prediction;
     }
 
@@ -587,7 +597,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onTransitionEnd(@NonNull Transition transition) {
-        //getDestinationFragment();
+        getDestinationFragment();
     }
 
     @Override
