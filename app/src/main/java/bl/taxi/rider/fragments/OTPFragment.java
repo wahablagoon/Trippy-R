@@ -75,6 +75,8 @@ public class OTPFragment extends Fragment {
     @BindView(R.id.log_in_pass)
     TextView logInPass;
 
+    String mobileNumber;
+
     public OTPFragment() {
         // Required empty public constructor
     }
@@ -101,7 +103,7 @@ public class OTPFragment extends Fragment {
         View otpFragment = inflater.inflate(R.layout.fragment_otp, container, false);
         unbinder = ButterKnife.bind(this, otpFragment);
 
-        String mobileNumber = getArguments().getString("mobile_number");
+        mobileNumber = getArguments().getString("mobile_number");
         System.out.println("mobileNumber= " + mobileNumber);
 
         if (mobileNumber!= null)
@@ -196,6 +198,18 @@ public class OTPFragment extends Fragment {
         getFragmentManager().popBackStack();
     }
 
+    @OnClick(R.id.log_in_pass)
+    public void setLogInPass()
+    {
+        PasswordFragment passwordFragment= PasswordFragment.newInstance();
+        Bundle arguments = new Bundle();
+        arguments.putString("mobile_number",mobileNumber);
+        passwordFragment.setArguments(arguments);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().addToBackStack(null)
+                .replace(R.id.otp_container, passwordFragment).commit();
+    }
+
     @OnClick(R.id.button_log_in)
     public void setButtonNext() {
         buttonNext.setEnabled(false);
@@ -212,7 +226,7 @@ public class OTPFragment extends Fragment {
 
     public void verifyOTP(String verifyOTPNumber) {
         RetrofitAPI service = MyApplication.getService();
-        Call<List<Model>> query = service.updateOTP("91", "9677772323", verifyOTPNumber);
+        Call<List<Model>> query = service.updateOTP("91", mobileNumber, verifyOTPNumber);
         query.enqueue(new Callback<List<Model>>() {
             @Override
             public void onResponse(@NonNull Call<List<Model>> call, @NonNull Response<List<Model>> response) {
@@ -236,7 +250,7 @@ public class OTPFragment extends Fragment {
                             Toast.makeText(getActivity(), "New User", Toast.LENGTH_SHORT).show();
                             SignUpFragment signUpFragment= SignUpFragment.newInstance();
                             Bundle arguments = new Bundle();
-                            arguments.putString("mobile_number","9677772323");
+                            arguments.putString("mobile_number",mobileNumber);
                             signUpFragment.setArguments(arguments);
                             FragmentManager fragmentManager = getFragmentManager();
                             fragmentManager.beginTransaction().addToBackStack(null)

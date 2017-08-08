@@ -116,13 +116,13 @@ public class VerificationFragment extends Fragment {
                     for (int i = 0; i < result.size(); i++) {
                         String responseStatus = result.get(i).getStatus();
                         if (responseStatus.matches("Success")) {
-                            OTPFragment otpFragment = OTPFragment.newInstance();
-                            Bundle arguments = new Bundle();
-                            arguments.putString("mobile_number", strMobileNumber);
-                            otpFragment.setArguments(arguments);
-                            FragmentManager fragmentManager = getFragmentManager();
-                            fragmentManager.beginTransaction().addToBackStack(null)
-                                    .replace(R.id.content_frame, otpFragment).commit();
+                                OTPFragment otpFragment = OTPFragment.newInstance();
+                                Bundle arguments = new Bundle();
+                                arguments.putString("mobile_number", strMobileNumber);
+                                otpFragment.setArguments(arguments);
+                                FragmentManager fragmentManager = getFragmentManager();
+                                fragmentManager.beginTransaction().addToBackStack(null)
+                                        .replace(R.id.content_frame, otpFragment).commitAllowingStateLoss();
                         }
                     }
                 }

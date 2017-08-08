@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import java.util.concurrent.TimeUnit;
+
 import bl.taxi.rider.R;
 import bl.taxi.rider.interfaces.RetrofitAPI;
 import bl.taxi.rider.utils.Constants;
@@ -36,6 +38,8 @@ public class MyApplication extends Application {
         Cache cache = new Cache(getCacheDir(), cacheSize);
 
         okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(100, TimeUnit.SECONDS)
+                .readTimeout(100, TimeUnit.SECONDS)
                 .cache(cache)
                 .build();
 

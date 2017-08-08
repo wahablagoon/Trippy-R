@@ -7,11 +7,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -40,31 +43,29 @@ import static bl.taxi.rider.utils.Constants.MY_PREFS_NAME;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SignUpFragment#newInstance} factory method to
+ * Use the {@link PasswordFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SignUpFragment extends Fragment {
+public class PasswordFragment extends Fragment {
 
 
     @BindView(R.id.button_back)
     ImageButton buttonBack;
-    @BindView(R.id.mobile_no)
-    TextView mobileNo;
-    @BindView(R.id.input_full_name)
-    MaterialEditText inputFullName;
-    @BindView(R.id.input_email)
-    MaterialEditText inputEmail;
-    @BindView(R.id.button_register)
-    Button buttonRegister;
-    Unbinder unbinder;
-    @BindView(R.id.create_account_text)
-    TextView createAccountText;
-
-    String mobileNumber;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    @BindView(R.id.verify_text)
+    TextView verifyText;
+    @BindView(R.id.input_password)
+    MaterialEditText inputPassword;
+    @BindView(R.id.forget_password)
+    TextView forgetPassword;
+    @BindView(R.id.button_log_in)
+    Button buttonLogIn;
+    Unbinder unbinder;
 
-    public SignUpFragment() {
+    String mobileNumber;
+
+    public PasswordFragment() {
         // Required empty public constructor
     }
 
@@ -74,8 +75,8 @@ public class SignUpFragment extends Fragment {
      *
      * @return A new instance of fragment OTPFragment.
      */
-    public static SignUpFragment newInstance() {
-        return new SignUpFragment();
+    public static PasswordFragment newInstance() {
+        return new PasswordFragment();
     }
 
     @Override
@@ -87,15 +88,38 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View signUpFragment = inflater.inflate(R.layout.fragment_signup, container, false);
-        unbinder = ButterKnife.bind(this, signUpFragment);
+        View passwordFragment = inflater.inflate(R.layout.fragment_password, container, false);
+        unbinder = ButterKnife.bind(this, passwordFragment);
 
         mobileNumber = getArguments().getString("mobile_number");
+        System.out.println("mobileNumber= " + mobileNumber);
 
         if (mobileNumber != null)
-            createAccountText.setText(String.format(getString(R.string.enter_details_to_create_account_with), mobileNumber));// Updating resources in Strings.xml
+            verifyText.setText(String.format(getString(R.string.enter_password), mobileNumber));// Updating resources in Strings.xml
 
-        return signUpFragment;
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        inputPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length()<=5) {
+                    setEnabled(false, android.R.color.darker_gray);
+                } else {
+                    setEnabled(true, R.color.colorPrimary);
+                }
+            }
+        });
+
+        return passwordFragment;
     }
 
     @Override
@@ -109,33 +133,37 @@ public class SignUpFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.button_register)
-    public void setButtonRegister() {
-        String fullName = inputFullName.getText().toString().trim();
-        String email = inputEmail.getText().toString().trim();
-        if (fullName.length() == 0) {
-            inputFullName.setError("Enter your Full Name");
-        } else if (!isValidEmail(email)) {
-            inputEmail.setError("Enter a valid email");
-        } else {
-            buttonRegister.setEnabled(false);
-            progressBar.setVisibility(View.VISIBLE);
-            createAccount(email, fullName);
-        }
+    @OnClick(R.id.button_back)
+    public void setButtonBack() {
+        getFragmentManager().popBackStack();
     }
 
-    public static boolean isValidEmail(CharSequence target) {
-        return target != null && Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    public void savePreferences(String userID, String userName, String userEmail, String userMobile) {
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString("user_id", userID);
+        editor.putString("user_name", userName);
+        editor.putString("user_email", userEmail);
+        editor.putString("user_mobile", userMobile);
+        editor.apply();
     }
 
-    public void createAccount(String email, String fullName) {
+    @OnClick(R.id.button_log_in)
+    public void setButtonNext() {
+        buttonLogIn.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
+        String getPassword = inputPassword.getText().toString();
+        //Send OTP to verify
+        verifyPassword(getPassword);
+    }
+
+    private void verifyPassword(String getPassword) {
         RetrofitAPI service = MyApplication.getService();
-        Call<List<Model>> query = service.createAccount("1", fullName, mobileNumber, "91", email, "0");
+        Call<List<Model>> query = service.verifyUser("1",mobileNumber,"91", getPassword);
         query.enqueue(new Callback<List<Model>>() {
             @Override
             public void onResponse(@NonNull Call<List<Model>> call, @NonNull Response<List<Model>> response) {
-                System.out.println("response = " + response.body());
-                buttonRegister.setEnabled(true);
+                System.out.println("response = " + response);
+                buttonLogIn.setEnabled(true);
                 progressBar.setVisibility(View.GONE);
                 List<Model> result = response.body();
                 if (result != null && result.size() != 0) {
@@ -148,11 +176,13 @@ public class SignUpFragment extends Fragment {
                             String userMobile = result.get(i).getPhone();
                             savePreferences(userID, userName, userEmail, userMobile); //save the details in shared preferences
                             Intent intent = new Intent(getActivity(), MapsActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                             getActivity().finish();
-                        } else {
-                            Toast.makeText(getActivity(), "SignUp Failed", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            buttonLogIn.setEnabled(true);
+                            Toast.makeText(getActivity(), "Invalid Password", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -160,19 +190,16 @@ public class SignUpFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<Model>> call, @NonNull Throwable t) {
-                buttonRegister.setEnabled(true);
+                buttonLogIn.setEnabled(true);
                 progressBar.setVisibility(View.GONE);
                 Log.e("Error", "retrofit", t);
             }
         });
+
     }
 
-    public void savePreferences(String userID, String userName, String userEmail, String userMobile) {
-        SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putString("user_id", userID);
-        editor.putString("user_name", userName);
-        editor.putString("user_email", userEmail);
-        editor.putString("user_mobile", userMobile);
-        editor.apply();
+    public void setEnabled(boolean bool, int colorID) {
+        buttonLogIn.setEnabled(bool);
+        buttonLogIn.setTextColor(ContextCompat.getColor(getActivity(), colorID));
     }
 }

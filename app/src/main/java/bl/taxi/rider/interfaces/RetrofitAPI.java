@@ -32,6 +32,9 @@ public interface RetrofitAPI {
     Call<List<Model>> createAccount(
             @Query("role") String role, @Query("name") String userName, @Query("phone") String mobileNumber,@Query("countrycode") String countryCode,@Query("email") String email,@Query("own") String own);
 
+    @GET("api/signin")
+    Call<List<Model>> verifyUser(
+            @Query("role") String role, @Query("username") String userName,@Query("countrycode") String countryCode,@Query("password") String password);
     @GET("json")
     Call<PlacesAutoComplete> getPlaces(
             @Query("input") String input, @Query("location") String location,
