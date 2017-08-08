@@ -511,10 +511,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             case R.id.pickup_layout:
 
-                TransitionManager.beginDelayedTransition(transitionsContainer, mTransitionSet);
                 FrameLayout.LayoutParams drop1 = (FrameLayout.LayoutParams) dropLayout.getLayoutParams();
                 FrameLayout.LayoutParams pick1 = (FrameLayout.LayoutParams) pickupLayout.getLayoutParams();
                 if (pick1.leftMargin != 0) {
+                    TransitionManager.beginDelayedTransition(transitionsContainer, mTransitionSet);
                     textLocationLayout.bringChildToFront(pickupLayout);
                     textLocationLayout.requestLayout();
                     textLocationLayout.invalidate();
@@ -526,18 +526,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     dropLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.color_view_grey, null));
                     pickupLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), android.R.color.white, null));
                     toolbarTitle.setText(getString(R.string.pickup_from));
+                    break;
                 } else {
                     toolbarTitle.setText(getString(R.string.pickup_from));
                     getDestinationFragment();
+                    break;
                 }
-                break;
 
             case R.id.drop_layout:
 
-                TransitionManager.beginDelayedTransition(transitionsContainer, mTransitionSet);
                 FrameLayout.LayoutParams drop = (FrameLayout.LayoutParams) dropLayout.getLayoutParams();
                 FrameLayout.LayoutParams pick = (FrameLayout.LayoutParams) pickupLayout.getLayoutParams();
                 if (drop.leftMargin != 0) {
+                    TransitionManager.beginDelayedTransition(transitionsContainer, mTransitionSet);
                     textLocationLayout.bringChildToFront(dropLayout);
                     textLocationLayout.requestLayout();
                     textLocationLayout.invalidate();
@@ -549,11 +550,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     pickupLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.color_view_grey, null));
                     dropLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), android.R.color.white, null));
                     toolbarTitle.setText(getString(R.string.drop_to));
+                    break;
                 } else {
                     toolbarTitle.setText(getString(R.string.drop_to));
                     getDestinationFragment();
+                    break;
                 }
-                break;
 
             case R.id.save_text:
                 break;
