@@ -30,9 +30,9 @@ public class Model {
     @SerializedName("email")
     @Expose
     private String email;
-    @SerializedName("mobile")
+    @SerializedName("phone")
     @Expose
-    private String mobile;
+    private String phone;
     @SerializedName("country_code")
     @Expose
     private String countryCode;
@@ -94,12 +94,12 @@ public class Model {
         this.email = email;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setPhone(String phone) {
+        this.phone= phone;
     }
 
     public String getCountryCode() {

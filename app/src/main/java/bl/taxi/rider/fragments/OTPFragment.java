@@ -2,6 +2,7 @@ package bl.taxi.rider.fragments;
 
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -69,6 +70,10 @@ public class OTPFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    @BindView(R.id.verify_text)
+    TextView verifyText;
+    @BindView(R.id.log_in_pass)
+    TextView logInPass;
 
     public OTPFragment() {
         // Required empty public constructor
@@ -96,10 +101,11 @@ public class OTPFragment extends Fragment {
         View otpFragment = inflater.inflate(R.layout.fragment_otp, container, false);
         unbinder = ButterKnife.bind(this, otpFragment);
 
-        String otpNumber = getArguments().getString("otp_number");
-        if(otpNumber !=null)
-            otpMobileNo.setText(otpNumber);
+        String mobileNumber = getArguments().getString("mobile_number");
+        System.out.println("mobileNumber= " + mobileNumber);
 
+        if (mobileNumber!= null)
+            verifyText.setText(String.format(getString(R.string.verify_auto),mobileNumber));// Updating resources in Strings.xml
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
@@ -115,7 +121,7 @@ public class OTPFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length()!=4) {
+                if (s.length() != 4) {
                     setEnabled(false, android.R.color.darker_gray);
                 } else {
                     setEnabled(true, R.color.colorPrimary);
@@ -134,7 +140,7 @@ public class OTPFragment extends Fragment {
                 verifyOTP(code);
             }
         });
-        smsVerifyCatcher.setPhoneNumberFilter("51465");
+        smsVerifyCatcher.setPhoneNumberFilter("51465"); //Setting filter for particular number
 
         return otpFragment;
     }
@@ -206,10 +212,11 @@ public class OTPFragment extends Fragment {
 
     public void verifyOTP(String verifyOTPNumber) {
         RetrofitAPI service = MyApplication.getService();
-        Call<List<Model>> query = service.updateOTP("91", "9677772323",verifyOTPNumber);
+        Call<List<Model>> query = service.updateOTP("91", "9677772323", verifyOTPNumber);
         query.enqueue(new Callback<List<Model>>() {
             @Override
             public void onResponse(@NonNull Call<List<Model>> call, @NonNull Response<List<Model>> response) {
+                System.out.println("response = " + response);
                 buttonNext.setEnabled(true);
                 progressBar.setVisibility(View.GONE);
                 List<Model> result = response.body();
@@ -217,22 +224,26 @@ public class OTPFragment extends Fragment {
                     for (int i = 0; i < result.size(); i++) {
                         String responseStatus = result.get(i).getStatus();
                         if (responseStatus.matches("Success")) {
-                            if (result.get(i).getUserid()!=null) {
                                 String userID = String.valueOf(result.get(i).getUserid());
-                                String userName = result.get(i).getFirstName()+" "+result.get(i).getLastName() ; //concatenate both first and last name
+                                String userName = result.get(i).getName();
                                 String userEmail = result.get(i).getEmail();
-                                String userMobile= result.get(i).getMobile();
-                                savePreferences(userID,userName,userEmail,userMobile); //save the details in shared preferences
+                                String userMobile = result.get(i).getPhone();
+                                savePreferences(userID, userName, userEmail, userMobile); //save the details in shared preferences
                                 Intent intent = new Intent(getActivity(), MapsActivity.class);
                                 startActivity(intent);
-                            }
-                            else
-                            {
-                                Toast.makeText(getActivity(), "New User", Toast.LENGTH_SHORT).show();
-                            }
-
+                                getActivity().finish();
+                        }else if (responseStatus.matches("newUser")) {
+                            Toast.makeText(getActivity(), "New User", Toast.LENGTH_SHORT).show();
+                            SignUpFragment signUpFragment= SignUpFragment.newInstance();
+                            Bundle arguments = new Bundle();
+                            arguments.putString("mobile_number","9677772323");
+                            signUpFragment.setArguments(arguments);
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().addToBackStack(null)
+                                    .replace(R.id.otp_container, signUpFragment).commit();
                         }
-                        else {
+                        else
+                        {
                             buttonNext.setEnabled(true);
                             Toast.makeText(getActivity(), "Invalid OTP", Toast.LENGTH_SHORT).show();
                         }
@@ -249,10 +260,9 @@ public class OTPFragment extends Fragment {
         });
     }
 
-    public void savePreferences(String userID,String userName,String userEmail, String userMobile)
-    {
+    public void savePreferences(String userID, String userName, String userEmail, String userMobile) {
         SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putString("user_id",userID);
+        editor.putString("user_id", userID);
         editor.putString("user_name", userName);
         editor.putString("user_email", userEmail);
         editor.putString("user_mobile", userMobile);

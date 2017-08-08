@@ -20,13 +20,17 @@ public interface RetrofitAPI {
     Call<List<Model>> getData(
             @Path("email") String email,@Path("password") String password);
 
-    @GET("api/sentOTP/{cc}/{mobile_no}")
+    @GET("api/sentOTP")
     Call<List<Model>> sendOTP(
-            @Path("cc") String cc, @Path("mobile_no") String mobile_no);
+            @Query("countrycode") String cc, @Query("phone") String mobile_no);
 
-    @GET("api/updateOTP/{cc}/{mobile_no}/{verification_code}")
+    @GET("api/updateOTP")
     Call<List<Model>> updateOTP(
-            @Path("cc") String cc, @Path("mobile_no") String mobile_no, @Path("verification_code") String verification_code);
+            @Query("countrycode") String cc, @Query("phone") String mobile_no, @Query("verifycode") String verification_code);
+
+    @GET("api/signup")
+    Call<List<Model>> createAccount(
+            @Query("role") String role, @Query("name") String userName, @Query("phone") String mobileNumber,@Query("countrycode") String countryCode,@Query("email") String email,@Query("own") String own);
 
     @GET("json")
     Call<PlacesAutoComplete> getPlaces(

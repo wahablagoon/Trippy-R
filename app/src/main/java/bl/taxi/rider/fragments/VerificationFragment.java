@@ -119,7 +119,7 @@ public class VerificationFragment extends Fragment {
                         if (responseStatus.matches("Success")) {
                             OTPFragment otpFragment = OTPFragment.newInstance();
                             Bundle arguments = new Bundle();
-                            arguments.putString("otp_number", strMobileNumber);
+                            arguments.putString("mobile_number", strMobileNumber);
                             otpFragment.setArguments(arguments);
                             FragmentManager fragmentManager = getFragmentManager();
                             fragmentManager.beginTransaction().addToBackStack(null)
