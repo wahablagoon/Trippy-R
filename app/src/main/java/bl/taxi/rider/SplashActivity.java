@@ -19,7 +19,7 @@ public class SplashActivity extends AppCompatActivity {
         VerificationFragment fragment =  new VerificationFragment();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().addToBackStack(null)
-                .replace(R.id.content_frame, fragment).commit();
+                .replace(R.id.content_frame, fragment).commitAllowingStateLoss();
         FragmentManager fm = getFragmentManager();
         fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override

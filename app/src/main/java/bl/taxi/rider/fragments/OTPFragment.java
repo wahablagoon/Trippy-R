@@ -207,7 +207,7 @@ public class OTPFragment extends Fragment {
         passwordFragment.setArguments(arguments);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().addToBackStack(null)
-                .replace(R.id.otp_container, passwordFragment).commit();
+                .replace(R.id.otp_container, passwordFragment).commitAllowingStateLoss();
     }
 
     @OnClick(R.id.button_log_in)
@@ -254,7 +254,7 @@ public class OTPFragment extends Fragment {
                             signUpFragment.setArguments(arguments);
                             FragmentManager fragmentManager = getFragmentManager();
                             fragmentManager.beginTransaction().addToBackStack(null)
-                                    .replace(R.id.otp_container, signUpFragment).commit();
+                                    .replace(R.id.otp_container, signUpFragment).commitAllowingStateLoss();
                         }
                         else
                         {

@@ -171,7 +171,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
                         transaction.replace(R.id.map_fragment_container, newFragment);
                         transaction.addToBackStack(null);
-                        transaction.commit();
+                        transaction.commitAllowingStateLoss();
                         toolbarTitle.setText(getString(R.string.profiles_amp_settings));
                         drawerMenu.setImageResource(R.drawable.ic_arrow_back_black_24dp);
 
@@ -579,7 +579,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.map_fragment_container, newFragment);
         transaction.addToBackStack(null);
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
         drawerMenu.setImageResource(R.drawable.ic_arrow_back_black_24dp);
     }
 
